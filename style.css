@@ -1,0 +1,44 @@
+/*
+
+ Theme Name: Werkstatt Child
+
+ Theme URI:
+
+ Description: Werkstatt Child Theme
+
+ Author: Your Name
+
+ Author URI: http://www.yourdomain.com/
+
+ Template: werkstatt
+
+ Version: 1.0
+
+ License: GNU General Public License v2 or later
+
+ License URI: http://www.gnu.org/licenses/gpl-2.0.html
+
+ Tags: Werkstatt Child Theme
+
+*/
+
+
+
+/*
+
+You can start adding your own styles here. Use !important to overwrite styles if needed. */
+
+/* single POI template */
+
+.product_title.entry-title{
+    float:left;
+}
+.webmapp-term-short{
+    float:left;
+}
+.woocommerce-checkout abbr {
+    text-decoration: none;
+}
+#privacy_policy_field{
+    padding: 10px 0px;
+}
