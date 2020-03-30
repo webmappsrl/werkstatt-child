@@ -142,12 +142,12 @@ function mostraPrezzo($post_id){
     $attributes_main = $product->get_attributes();
     $available_variations = $product->get_available_variations();
     echo '<br>';
-    $attributes = array();
+    // $attributes = array();
     // print_r($available_variations);
     foreach ( $attributes_main as $attribute ):
         $attributes['Modalità'] = $attribute->get_options();
         // testing output
-        print_r($attributes);
+        // print_r($attributes);
     endforeach;
     $attribute_keys  = array_keys( $attributes );
     $variations_json = wp_json_encode( $available_variations );
