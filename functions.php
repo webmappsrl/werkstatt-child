@@ -138,7 +138,7 @@ function mostraPrezzo($post_id){
     // echo do_shortcode('[products id="6889"]');
     // echo do_shortcode('[add_to_cart id="6896"]');
     // echo wc_attribute_label( $attribute_name );
-    $product = wc_get_product( '6896');
+    $product = wc_get_product( '6888');
     $attributes_main = $product->get_attributes();
     $available_variations = $product->get_available_variations();
     echo '<br>';
