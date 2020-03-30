@@ -42,3 +42,6 @@ You can start adding your own styles here. Use !important to overwrite styles if
 #privacy_policy_field{
     padding: 10px 0px;
 }
+.woocommerce-message {
+    display: none;
+}
