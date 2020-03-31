@@ -130,98 +130,142 @@ function mostraProdottoComprato($paid_date)
     //' .$order_meta[_billing_first_name][0].' '. $order_meta[_billing_last_name][0].' nome e cognome del acquirente
     echo '<h2 class="gia-adottato">L\'albero è stato già adottato fino al ' . $giorno, ' ', $mesi[$mese], ' ', $anno . '!</h2>';
 }
-function mostraPrezzo($post_id){
+function mostraPrezzo($post_id)
+{
     echo '<h2 id="adottaora">Adotta per un anno!</h2>';
     //woocommerce_template_single_price();
     echo '<p>Scegli fra le nostre tre opzioni di adozione, a partire da €9 all\'anno. Questo versamento permetterà di fornire le cure necessarie alla pianta e di mantenere in vita il progetto.</p>';
-    // woocommerce_template_single_add_to_cart();
-    // echo do_shortcode('[products id="6889"]');
-    // echo do_shortcode('[add_to_cart id="6896"]');
-    // echo wc_attribute_label( $attribute_name );
-    $product = wc_get_product( '6888');
-    $attributes_main = $product->get_attributes();
-    $available_variations = $product->get_available_variations();
-    echo '<br>';
-    // $attributes = array();
-    // print_r($available_variations);
-    foreach ( $attributes_main as $attribute ):
-        $attributes['Modalità'] = $attribute->get_options();
-        // testing output
-        // print_r($attributes);
-    endforeach;
-    $attribute_keys  = array_keys( $attributes );
-    $variations_json = wp_json_encode( $available_variations );
-    $variations_attr = function_exists( 'wc_esc_json' ) ? wc_esc_json( $variations_json ) : _wp_specialchars( $variations_json, ENT_QUOTES, 'UTF-8', true );
+    
+    $cart = WC()->cart->get_cart();
+    $cart_has_poi_id = '';
+    $cart_has_poi_name = '';
+    $cart_product_id = '';
+    foreach ( $cart as $key => $val){
+        $poi_id = $val['idpoi'];
+        $product_id = $val['product_id'];
+        $name = $val['data']->get_name();
+        if ($post_id == $poi_id){
+            $cart_has_poi_id = $poi_id;
+            $cart_product_id = $product_id;
+            $cart_has_poi_name = $name;
+        }
+    }
+    if (!empty($cart_has_poi_id)) {
+        echo '<p><strong>Modifica il tuo acquisto cambiando opzione di adozione</strong></p>';
+        echo $cart_has_poi_name;
+    }
+
+    $products = wc_get_products(array(
+        'category' => array('mpt-category'),
+    ));
+    $product_1 = wc_get_product('6887');
+    $product_2 = wc_get_product('6888');
+    $product_3 = wc_get_product('6889');
+
+    
+    echo $product_1->get_description();
+    echo wc_price($product_1->get_price());
     ?>
-        <form class="variations_form cart" action="<?php echo esc_url( apply_filters( 'woocommerce_add_to_cart_form_action', $product->get_permalink() ) ); ?>" method="post" enctype='multipart/form-data' data-product_id="<?php echo absint( $product->get_id() ); ?>" data-product_variations="<?php echo $variations_attr; // WPCS: XSS ok. ?>">
-        <?php do_action( 'woocommerce_before_variations_form' ); ?>
+    <form class="cart" action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product_1->get_permalink())); ?>" method="post" enctype='multipart/form-data'>
+        <input name="idpoi" type="hidden" value="<?= $post_id ?>">
+        <button type="submit" data-poi="<?= $post_id ?>" name="add-to-cart" value="<?php echo esc_attr($product_1->get_id()); ?>" class="single_add_to_cart_button button alt" <?php if($cart_has_poi_name == 'Friendship'){ echo 'disabled';} ?>><?php echo esc_html($product_1->get_name()); ?></button>
 
-        <?php if ( empty( $available_variations ) && false !== $available_variations ) : ?>
-            <p class="stock out-of-stock"><?php echo esc_html( apply_filters( 'woocommerce_out_of_stock_message', __( 'This product is currently out of stock and unavailable.', 'woocommerce' ) ) ); ?></p>
-        <?php else : ?>
-            <table class="variations" cellspacing="0">
-                <tbody>
-                    <?php foreach ( $attributes as $attribute_name => $options ) : ?>
-                        <tr>
-                            <td class="label"><label for="<?php echo esc_attr( sanitize_title( $attribute_name ) ); ?>"><?php echo wc_attribute_label( $attribute_name ); // WPCS: XSS ok. ?></label></td>
-                            <td class="value">
-                                <?php
-                                    wc_dropdown_variation_attribute_options( array(
-                                        'options'   => $options,
-                                        'attribute' => $attribute_name,
-                                        'product'   => $product,
-                                    ) );
-                                    echo end( $attribute_keys ) === $attribute_name ? wp_kses_post( apply_filters( 'woocommerce_reset_variations_link', '<a class="reset_variations" href="#">' . esc_html__( 'Clear', 'woocommerce' ) . '</a>' ) ) : '';
-                                ?>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-
-            <div class="single_variation_wrap">
-                <div class="woocommerce-variation single_variation">
-                    <script type="text/template" id="tmpl-variation-template">
-                    <div class="woocommerce-variation-description">{{{ data.variation.variation_description }}}</div>
-                    <div class="woocommerce-variation-price">{{{ data.variation.price_html }}}</div>
-                    <div class="woocommerce-variation-availability">{{{ data.variation.availability_html }}}</div>
-                    </script>
-                    <script type="text/template" id="tmpl-unavailable-variation-template">
-                    <p><?php esc_html_e( 'Sorry, this product is unavailable. Please choose a different combination.', 'woocommerce' ); ?></p>
-                    </script>
-                </div>
-                <div class="woocommerce-variation-add-to-cart variations_button">
-                    <?php do_action( 'woocommerce_before_add_to_cart_button' ); ?>
-
-                    <?php
-                    do_action( 'woocommerce_before_add_to_cart_quantity' );
-
-                    woocommerce_quantity_input( array(
-                        'min_value'   => apply_filters( 'woocommerce_quantity_input_min', $product->get_min_purchase_quantity(), $product ),
-                        'max_value'   => apply_filters( 'woocommerce_quantity_input_max', $product->get_max_purchase_quantity(), $product ),
-                        'input_value' => isset( $_POST['quantity'] ) ? wc_stock_amount( wp_unslash( $_POST['quantity'] ) ) : $product->get_min_purchase_quantity(), // WPCS: CSRF ok, input var ok.
-                    ) );
-
-                    do_action( 'woocommerce_after_add_to_cart_quantity' );
-                    ?>
-
-                    <button type="submit" data-poi="<?= $post_id?>" class="single_add_to_cart_button button alt"><?php echo esc_html( $product->single_add_to_cart_text() ); ?></button>
-
-                    <?php do_action( 'woocommerce_after_add_to_cart_button' ); ?>
-
-                    <input type="hidden" name="add-to-cart" value="<?php echo absint( $product->get_id() ); ?>" />
-                    <input type="hidden" name="product_id" value="<?php echo absint( $product->get_id() ); ?>" />
-                    <input type="hidden" name="variation_id" class="variation_id" value="0" />
-                </div>
-            </div>
-        <?php endif; ?>
-
-        <?php do_action( 'woocommerce_after_variations_form' ); ?>
     </form>
     <?php
+    
+    echo $product_2->get_description();
+    echo wc_price($product_2->get_price());
+    ?>
+    <form class="cart" action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product_2->get_permalink())); ?>" method="post" enctype='multipart/form-data'>
+        <input name="idpoi" type="hidden" value="<?= $post_id ?>">
+        <button type="submit" data-poi="<?= $post_id ?>" name="add-to-cart" value="<?php echo esc_attr($product_2->get_id()); ?>" class="single_add_to_cart_button button alt" <?php if($cart_has_poi_name == 'Love'){ echo 'disabled';} ?>><?php echo esc_html($product_2->get_name()); ?></button>
+
+    </form>
+    <?php
+    echo $product_3->get_description();
+    echo wc_price($product_3->get_price());
+    ?>
+    <form class="cart" action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product_3->get_permalink())); ?>" method="post" enctype='multipart/form-data'>
+        <input name="idpoi" type="hidden" value="<?= $post_id ?>">
+        <button type="submit" data-poi="<?= $post_id ?>" name="add-to-cart" value="<?php echo esc_attr($product_3->get_id()); ?>" class="single_add_to_cart_button button alt" <?php if($cart_has_poi_name == 'Passion'){ echo 'disabled';} ?>><?php echo esc_html($product_3->get_name()); ?></button>
+
+    </form>
+    <?php
+    
     echo '<div class="back-to-map"><a href="https://montepisanotree.org/mappa">o torna alla mappa</a></div>';
 }
 
+// Adds custom input data to WC_CART
+function iconic_add_engraving_text_to_cart_item( $cart_item_data, $product_id, $variation_id ) {
+    $engraving_text = filter_input( INPUT_POST, 'idpoi' );
+ 
+    if ( empty( $engraving_text ) ) {
+        return $cart_item_data;
+    }
+ 
+    $cart_item_data['idpoi'] = $engraving_text;
+ 
+    return $cart_item_data;
+}
+ 
+add_filter( 'woocommerce_add_cart_item_data', 'iconic_add_engraving_text_to_cart_item', 10, 3 );
+
+// Removesitem from cart
+// add_action('woocommerce_ajax_added_to_cart', function($product_id,$post_id){
+//     $cart = WC()->cart->get_cart();
+//     $cart_has_poi_id = '';
+//     $cart_product_id = '';
+//     foreach ( $cart as $key => $val){
+//         $poi_id = $val['idpoi'];
+//         $product_id = $val['product_id'];
+//         if ($post_id == $poi_id){
+//             $cart_has_poi_id = $poi_id;
+//             $product_cart_id = WC()->cart->generate_cart_id( $product_id );
+//             $cart_item_key = WC()->cart->find_product_in_cart( $product_cart_id );
+//             if ( $cart_item_key ) WC()->cart->remove_cart_item( $cart_item_key );
+//         }
+//     }
+// });
+
+// action to add custom cart data to order
+add_action( 'woocommerce_add_order_item_meta', function ( $itemId, $values, $key ) {
+    if ( isset( $values['myCustomData'] ) ) {
+        wc_add_order_item_meta( $itemId, 'myCustomData', $values['myCustomData'] );
+    }
+}, 10, 3 );
+
+// 
+function wm_get_poi_id() {
+    $cart = WC()->cart->get_cart();
+    $order_json = array();
+    foreach ( $cart as $key => $val){
+        $item = array();
+        $poi_id = $val['idpoi'];
+        $poi_title = get_the_title( $poi_id );
+        $name = $val['data']->get_name();
+        $item['id'] = $poi_id;
+        $item['title'] = $poi_title;
+        $item['dedication'] = '';
+        if($name == 'Friendship') {
+            $order_json['friendship'][] = $item ;
+        }
+        if($name == 'Love') {
+            $order_json['Love'][] = $item ;
+        }
+        if($name == 'Passion') {
+            $order_json['Passion'][] = $item ;
+        }
+    }
+
+    echo '<pre>';
+    print_r ($order_json);
+    echo '</pre>';
+
+    // echo '<pre>';
+    // print_r ($cart);
+    // echo '</pre>';
+}
+add_action( 'woocommerce_before_cart_table', 'wm_get_poi_id' );
 
 /** change Aggiungi al carrello text */
 

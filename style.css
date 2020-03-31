@@ -45,3 +45,23 @@ You can start adding your own styles here. Use !important to overwrite styles if
 .woocommerce-message {
     display: none;
 }
+
+.single_add_to_cart_button.button {
+    justify-content: center;
+    min-width: 160px;
+}
+
+.single_add_to_cart_button.button:disabled {
+    cursor: text;
+    background-color: #afafaf;
+}
+.single_add_to_cart_button.button:hover:disabled {
+    cursor: text;
+    background-color: #afafaf!important;
+    color: white;
+}
+
+.single_add_to_cart_button.button:hover {
+    background-color: white!important;
+    color: #000;
+}
