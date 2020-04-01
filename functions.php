@@ -194,36 +194,23 @@ function mostraPrezzo($post_id)
 
     </form>
     <?php
-    function check_product_added_to_cart( $product_id, $post_id) {
-        $cart = WC()->cart->get_cart();
-        $cart_item_key = '';
-        $has_item = false;
-        foreach ( $cart as $key => $val){
-            $poi_id = $val['idpoi'];
-            $key = $val['key'];
-            if ($post_id == $poi_id){
-                $cart_item_key = $val['key'];
-                $has_item = true;
-            }
-        }
-        print_r($cart_item_key);
-        echo "WCPEDRAM";
-        if( $has_item ){
-            WC()->cart->remove_cart_item( $cart_item_key );
-            
-            wc_add_notice( __( 'The product "blab bla" has been changed', 'theme_domain' ), 'notice' );
-        }
-    }
-    add_action( 'woocommerce_add_to_cart', 'check_product_added_to_cart', 10, 2 );
         
     echo '<div class="back-to-map"><a href="https://montepisanotree.org/mappa">o torna alla mappa</a></div>';
 }
 
 // Adds custom input data to WC_CART
 function wm_add_poi_id_to_cart_item( $cart_item_data, $product_id, $variation_id ) {
-    $post_id = filter_input( INPUT_POST, 'idpoi' );
- 
+    // $post_id = filter_input( INPUT_POST, 'idpoi' );
+    
+    $post_id = intval($_POST['idpoi']);
+    $post = get_post($post_id);
+    if (!$post instanceof WP_Post) {
+        throw new Exception ('Invalid Post ID provided!');
+        return false;
+    }
+
     if ( empty( $post_id ) ) {
+        
         return $cart_item_data;
     }
 
@@ -268,6 +255,7 @@ add_filter( 'woocommerce_get_item_data', 'wm_poi_title_text_cart', 10, 2 );
 //     }
 // });
 
+
 // add_filter( 'woocommerce_add_to_cart_validation', 'remove_cart_item_before_add_to_cart', 20, 3 );
 // function remove_cart_item_before_add_to_cart( $passed, $product_id, $quantity ) {
 //     $cart = WC()->cart->get_cart();
@@ -288,11 +276,11 @@ add_filter( 'woocommerce_get_item_data', 'wm_poi_title_text_cart', 10, 2 );
 // }
 
 // action to add custom cart data to order
-add_action( 'woocommerce_add_order_item_meta', function ( $itemId, $values, $key ) {
-    if ( isset( $values['myCustomData'] ) ) {
-        wc_add_order_item_meta( $itemId, 'myCustomData', $values['myCustomData'] );
-    }
-}, 10, 3 );
+// add_action( 'woocommerce_add_order_item_meta', function ( $itemId, $values, $key ) {
+//     if ( isset( $values['myCustomData'] ) ) {
+//         wc_add_order_item_meta( $itemId, 'myCustomData', $values['myCustomData'] );
+//     }
+// }, 10, 3 );
 
 // 
 function wm_get_poi_id() {
@@ -321,9 +309,9 @@ function wm_get_poi_id() {
     print_r ($order_json);
     echo '</pre>';
 
-    // echo '<pre>';
-    // print_r ($cart);
-    // echo '</pre>';
+    echo '<pre>';
+    print_r ($cart);
+    echo '</pre>';
 }
 add_action( 'woocommerce_before_cart_table', 'wm_get_poi_id' );
 
