@@ -194,41 +194,98 @@ function mostraPrezzo($post_id)
 
     </form>
     <?php
-    
+    function check_product_added_to_cart( $product_id, $post_id) {
+        $cart = WC()->cart->get_cart();
+        $cart_item_key = '';
+        $has_item = false;
+        foreach ( $cart as $key => $val){
+            $poi_id = $val['idpoi'];
+            $key = $val['key'];
+            if ($post_id == $poi_id){
+                $cart_item_key = $val['key'];
+                $has_item = true;
+            }
+        }
+        print_r($cart_item_key);
+        echo "WCPEDRAM";
+        if( $has_item ){
+            WC()->cart->remove_cart_item( $cart_item_key );
+            
+            wc_add_notice( __( 'The product "blab bla" has been changed', 'theme_domain' ), 'notice' );
+        }
+    }
+    add_action( 'woocommerce_add_to_cart', 'check_product_added_to_cart', 10, 2 );
+        
     echo '<div class="back-to-map"><a href="https://montepisanotree.org/mappa">o torna alla mappa</a></div>';
 }
 
 // Adds custom input data to WC_CART
-function iconic_add_engraving_text_to_cart_item( $cart_item_data, $product_id, $variation_id ) {
-    $engraving_text = filter_input( INPUT_POST, 'idpoi' );
+function wm_add_poi_id_to_cart_item( $cart_item_data, $product_id, $variation_id ) {
+    $post_id = filter_input( INPUT_POST, 'idpoi' );
  
-    if ( empty( $engraving_text ) ) {
+    if ( empty( $post_id ) ) {
         return $cart_item_data;
     }
- 
-    $cart_item_data['idpoi'] = $engraving_text;
+
+    $cart_item_data['idpoi'] = $post_id;
  
     return $cart_item_data;
 }
  
-add_filter( 'woocommerce_add_cart_item_data', 'iconic_add_engraving_text_to_cart_item', 10, 3 );
+add_filter( 'woocommerce_add_cart_item_data', 'wm_add_poi_id_to_cart_item', 10, 3 );
+
+// display Poi title in the cart
+function wm_poi_title_text_cart( $item_data, $cart_item ) {
+    if ( empty( $cart_item['idpoi'] ) ) {
+        return $item_data;
+    }
+    $poi_title = get_the_title( $cart_item['idpoi'] );
+    $item_data[] = array(
+        'key'     => __( 'Albero', 'iconic' ),
+        'value'   => wc_clean( $poi_title ),
+        'display' => '',
+    );
+ 
+    return $item_data;
+}
+ 
+add_filter( 'woocommerce_get_item_data', 'wm_poi_title_text_cart', 10, 2 );
 
 // Removesitem from cart
-// add_action('woocommerce_ajax_added_to_cart', function($product_id,$post_id){
+// add_action('woocommerce_ajax_added_to_cart', function($product_id){
 //     $cart = WC()->cart->get_cart();
 //     $cart_has_poi_id = '';
 //     $cart_product_id = '';
 //     foreach ( $cart as $key => $val){
 //         $poi_id = $val['idpoi'];
 //         $product_id = $val['product_id'];
-//         if ($post_id == $poi_id){
+//         // if ($post_id == $poi_id){
 //             $cart_has_poi_id = $poi_id;
 //             $product_cart_id = WC()->cart->generate_cart_id( $product_id );
 //             $cart_item_key = WC()->cart->find_product_in_cart( $product_cart_id );
 //             if ( $cart_item_key ) WC()->cart->remove_cart_item( $cart_item_key );
-//         }
+//         // }
 //     }
 // });
+
+// add_filter( 'woocommerce_add_to_cart_validation', 'remove_cart_item_before_add_to_cart', 20, 3 );
+// function remove_cart_item_before_add_to_cart( $passed, $product_id, $quantity ) {
+//     $cart = WC()->cart->get_cart();
+//         $cart_has_poi_id = '';
+//         $cart_product_id = '';
+//         // foreach ( $cart as $key => $val){
+//             $poi_id = $val['idpoi'];
+//             // $product_id = $val['product_id'];
+//             $product_id = '6887';
+//             // if ($post_id == $poi_id){
+//                 $cart_has_poi_id = $poi_id;
+//                 $product_cart_id = WC()->cart->generate_cart_id( '6887' );
+//                 $cart_item_key = WC()->cart->find_product_in_cart( $product_cart_id );
+//                 if ( $cart_item_key ) WC()->cart->remove_cart_item( $cart_item_key );
+//             // }
+//         // }
+//     return $passed;
+// }
 
 // action to add custom cart data to order
 add_action( 'woocommerce_add_order_item_meta', function ( $itemId, $values, $key ) {
