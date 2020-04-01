@@ -204,14 +204,28 @@ function wm_add_poi_id_to_cart_item( $cart_item_data, $product_id, $variation_id
     
     $post_id = intval($_POST['idpoi']);
     $post = get_post($post_id);
+
     if (!$post instanceof WP_Post) {
         throw new Exception ('Invalid Post ID provided!');
         return false;
     }
 
+
+    
+
     if ( empty( $post_id ) ) {
         
         return $cart_item_data;
+    }
+
+
+    $items = WC()->cart->get_cart();
+    foreach ( $items as $key => $data )
+    {
+        if ( isset( $data['idpoi'] ) && $data['idpoi']==$post_id)
+        {
+            WC()->cart->remove_cart_item( $key );
+        }
     }
 
     $cart_item_data['idpoi'] = $post_id;
@@ -375,7 +389,7 @@ function custom_get_privacy_policy_text($type = '')
 }
 
 
-apply_filters('woocommerce_get_privacy_policy_text', $text, $type);
+//apply_filters('woocommerce_get_privacy_policy_text', $text, $type);
 $text = get_option('woocommerce_checkout_privacy_policy_text', sprintf(__('I tuoi dati personali saranno utilizzati per elaborare il tuo ordine, supportare la tua esperienza su questo sito web e per altri scopi descritti nella nostra %s.', 'woocommerce'), '[privacy_policy]'));
 
 
