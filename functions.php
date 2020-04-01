@@ -7,6 +7,8 @@
 /* Include the parent theme style.css
 /*-----------------------------------------------------------------------------------*/
 
+require_once 'includes/woocommerce/checkout_functions.php';
+
 add_action('wp_enqueue_scripts', 'theme_enqueue_styles');
 function theme_enqueue_styles()
 {
@@ -297,37 +299,7 @@ add_filter( 'woocommerce_get_item_data', 'wm_poi_title_text_cart', 10, 2 );
 // }, 10, 3 );
 
 // 
-function wm_get_poi_id() {
-    $cart = WC()->cart->get_cart();
-    $order_json = array();
-    foreach ( $cart as $key => $val){
-        $item = array();
-        $poi_id = $val['idpoi'];
-        $poi_title = get_the_title( $poi_id );
-        $name = $val['data']->get_name();
-        $item['id'] = $poi_id;
-        $item['title'] = $poi_title;
-        $item['dedication'] = '';
-        if($name == 'Friendship') {
-            $order_json['friendship'][] = $item ;
-        }
-        if($name == 'Love') {
-            $order_json['Love'][] = $item ;
-        }
-        if($name == 'Passion') {
-            $order_json['Passion'][] = $item ;
-        }
-    }
 
-    echo '<pre>';
-    print_r ($order_json);
-    echo '</pre>';
-
-    echo '<pre>';
-    print_r ($cart);
-    echo '</pre>';
-}
-add_action( 'woocommerce_before_cart_table', 'wm_get_poi_id' );
 
 /** change Aggiungi al carrello text */
 
