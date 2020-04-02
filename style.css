@@ -89,3 +89,6 @@ You can start adding your own styles here. Use !important to overwrite styles if
 .show-woocommerce-cart-checkout .cart_item td:not(.product-thumbnail){
     text-align: left;
 }
+.woocommerce .wc-item-meta {
+    display: none;
+}

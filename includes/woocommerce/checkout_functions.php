@@ -83,6 +83,9 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
 add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_data, $order) {
     $dedicationProducts = montepisanotree_dedication_product_types();
     $current_date = date('Ymd');
+    $order = wc_get_order( $order_id );
+    $order_items  = $order->get_items();
+    $array_id = array();
     $json = WC()->session->get(MPT_SESSION_JSON_KEY);
     if ($json) {
         $jsonPhp = json_decode($json, true);
@@ -90,6 +93,7 @@ add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_
             if (is_array($arr)) :
                 foreach ($arr as $k => $data) :
                     if (isset($data['id'])) {
+                        $array_id[] = $data['id'];
                         update_field( MPT_POI_PAID_DATE , $current_date , $data['id'] );
                     }
                 endforeach;
@@ -113,9 +117,13 @@ add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_
 
         
     }
+    $count = 0;
+    foreach ( $order_items as $item_id => $item ) {
+        // Added the function to save poi_id to item meta data
+        wc_add_order_item_meta($item_id, 'idpoi', $array_id[$count]);
+        $count ++;
+    }
 }, 10, 3);
-
-
 
 
 add_action('woocommerce_order_status_completed', function ($order_id, $order) {

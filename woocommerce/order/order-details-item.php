@@ -30,6 +30,7 @@ if ( ! apply_filters( 'woocommerce_order_item_visible', true, $item ) ) {
 		$is_visible        = $product && $product->is_visible();
 		$product_permalink = apply_filters( 'woocommerce_order_item_permalink', $is_visible ? $product->get_permalink( $item ) : '', $item, $order );
 
+		// change the name in thankyoupage webmapp
         $poi_title = get_the_title( $idpoi );
         $poi_permalink = get_permalink($idpoi);
         $terms = get_the_terms( $idpoi , 'webmapp_category' );

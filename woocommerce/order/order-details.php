@@ -87,6 +87,8 @@ if ( $show_downloads ) {
                         'idpoi'             =>  $array_id[$count]
 					)
                 );
+                // Added the function to save poi_id to item meta data
+                // woocommerce_add_order_item_meta($item_id, 'idpoi', $array_id[$count]);
                 $count ++;
 			}
 
