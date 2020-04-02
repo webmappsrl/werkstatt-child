@@ -86,9 +86,9 @@ add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_
                 foreach ($arr as $k => $data) :
                     if (isset($data['id'])) {
                         if (isset($posted_data[$data['id']]))
+                        update_field( MPT_POI_PAID_DATE , $current_date , $data['id'] );
                         {
                             $jsonPhp[$type][$k]['dedication'] = $posted_data[$data['id']];
-                            update_field( MPT_POI_PAID_DATE , $current_date , $data['id'] );
                         }
                             
                     }

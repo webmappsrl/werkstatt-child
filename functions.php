@@ -160,12 +160,12 @@ function mostraPrezzo($post_id)
     $products = wc_get_products(array(
         'category' => array('mpt-category'),
     ));
-    // $product_1 = wc_get_product('6887');
-    // $product_2 = wc_get_product('6888');
-    // $product_3 = wc_get_product('6889');
-    $product_1 = wc_get_product('6884');
-    $product_2 = wc_get_product('6885');
-    $product_3 = wc_get_product('6886');
+    $product_1 = wc_get_product('6887');
+    $product_2 = wc_get_product('6888');
+    $product_3 = wc_get_product('6889');
+    // $product_1 = wc_get_product('6884');
+    // $product_2 = wc_get_product('6885');
+    // $product_3 = wc_get_product('6886');
 
     
     echo $product_1->get_description();
@@ -253,52 +253,6 @@ function wm_poi_title_text_cart( $item_data, $cart_item ) {
 }
  
 add_filter( 'woocommerce_get_item_data', 'wm_poi_title_text_cart', 10, 2 );
-
-// Removesitem from cart
-// add_action('woocommerce_ajax_added_to_cart', function($product_id){
-//     $cart = WC()->cart->get_cart();
-//     $cart_has_poi_id = '';
-//     $cart_product_id = '';
-//     foreach ( $cart as $key => $val){
-//         $poi_id = $val['idpoi'];
-//         $product_id = $val['product_id'];
-//         // if ($post_id == $poi_id){
-//             $cart_has_poi_id = $poi_id;
-//             $product_cart_id = WC()->cart->generate_cart_id( $product_id );
-//             $cart_item_key = WC()->cart->find_product_in_cart( $product_cart_id );
-//             if ( $cart_item_key ) WC()->cart->remove_cart_item( $cart_item_key );
-//         // }
-//     }
-// });
-
-
-// add_filter( 'woocommerce_add_to_cart_validation', 'remove_cart_item_before_add_to_cart', 20, 3 );
-// function remove_cart_item_before_add_to_cart( $passed, $product_id, $quantity ) {
-//     $cart = WC()->cart->get_cart();
-//         $cart_has_poi_id = '';
-//         $cart_product_id = '';
-//         // foreach ( $cart as $key => $val){
-//             $poi_id = $val['idpoi'];
-//             // $product_id = $val['product_id'];
-//             $product_id = '6887';
-//             // if ($post_id == $poi_id){
-//                 $cart_has_poi_id = $poi_id;
-//                 $product_cart_id = WC()->cart->generate_cart_id( '6887' );
-//                 $cart_item_key = WC()->cart->find_product_in_cart( $product_cart_id );
-//                 if ( $cart_item_key ) WC()->cart->remove_cart_item( $cart_item_key );
-//             // }
-//         // }
-//     return $passed;
-// }
-
-// action to add custom cart data to order
-// add_action( 'woocommerce_add_order_item_meta', function ( $itemId, $values, $key ) {
-//     if ( isset( $values['myCustomData'] ) ) {
-//         wc_add_order_item_meta( $itemId, 'myCustomData', $values['myCustomData'] );
-//     }
-// }, 10, 3 );
-
-// 
 
 
 /** change Aggiungi al carrello text */
