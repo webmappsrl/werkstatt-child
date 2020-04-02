@@ -65,3 +65,27 @@ You can start adding your own styles here. Use !important to overwrite styles if
     background-color: white!important;
     color: #000;
 }
+
+.woocommerce .product-thumbnail {
+    text-align: center;
+}
+
+.woocommerce .cart-item-cat-title {
+    padding-top: 5px;
+}
+
+.woocommerce .product-quantity {
+    display: none;
+}
+.woocommerce .product-subtotal {
+    display: none;
+}
+.show-woocommerce-cart-checkout .small-12.columns.text-center {
+    display: none;
+}
+.show-woocommerce-cart-checkout .actions {
+    display: none;
+}
+.show-woocommerce-cart-checkout .cart_item td:not(.product-thumbnail){
+    text-align: left;
+}

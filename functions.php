@@ -212,14 +212,10 @@ function wm_add_poi_id_to_cart_item( $cart_item_data, $product_id, $variation_id
         return false;
     }
 
-
-    
-
     if ( empty( $post_id ) ) {
         
         return $cart_item_data;
     }
-
 
     $items = WC()->cart->get_cart();
     foreach ( $items as $key => $data )
@@ -237,23 +233,31 @@ function wm_add_poi_id_to_cart_item( $cart_item_data, $product_id, $variation_id
  
 add_filter( 'woocommerce_add_cart_item_data', 'wm_add_poi_id_to_cart_item', 10, 3 );
 
-// display Poi title in the cart
-function wm_poi_title_text_cart( $item_data, $cart_item ) {
-    if ( empty( $cart_item['idpoi'] ) ) {
-        return $item_data;
-    }
-    $poi_title = get_the_title( $cart_item['idpoi'] );
-    $item_data[] = array(
-        'key'     => __( 'Albero', 'iconic' ),
-        'value'   => wc_clean( $poi_title ),
-        'display' => '',
-    );
- 
-    return $item_data;
-}
- 
-add_filter( 'woocommerce_get_item_data', 'wm_poi_title_text_cart', 10, 2 );
 
+// display Poi thumbnail in cart
+function wm_poi_thumb_title_cat_cart( $product_get_image, $cart_item, $cart_item_key ) {
+   
+    if ( empty( $cart_item['idpoi'] ) ) {
+        return $product_get_image;
+    }
+    $product_get_image = '';
+    $product_get_image = get_the_post_thumbnail($cart_item['idpoi']);
+    $poi_title = get_the_title( $cart_item['idpoi'] );
+    $terms = get_the_terms( $cart_item['idpoi'] , 'webmapp_category' );
+    $product_get_image .= '<div class="cart-item-cat-title">'.$terms[0]->name . ' - ' . $poi_title.'</div>';
+
+ 
+    return $product_get_image;
+}
+add_filter( 'woocommerce_cart_item_thumbnail', 'wm_poi_thumb_title_cat_cart', 10, 3 );
+
+//
+// function filter_woocommerce_order_item_name( $item_name, $item ) { 
+//     // $item_name = $terms[0]->name . ' - ' . $poi_title;
+//     // apply_filters( 'woocommerce_order_item_name', $item_name, $item, $is_visible );
+//     return $item_name; 
+// }; 
+// add_filter( 'woocommerce_order_item_name', 'filter_woocommerce_order_item_name', 10, 2 ); 
 
 /** change Aggiungi al carrello text */
 

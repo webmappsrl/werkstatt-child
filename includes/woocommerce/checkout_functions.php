@@ -41,9 +41,12 @@ function montepisanotree_get_cart_json()
     WC()->session->set(MPT_SESSION_JSON_KEY, json_encode($order_json));
 
     //DEBUG
-    echo '<pre>';
-    echo json_encode($order_json);
-    echo '</pre>';
+    // echo '<pre>';
+    // echo json_encode($order_json);
+    // echo '</pre>';
+    echo '<div class="show-woocommerce-cart-checkout">';
+    echo do_shortcode('[woocommerce_cart]');
+    echo '</div>';
 }
 
 
