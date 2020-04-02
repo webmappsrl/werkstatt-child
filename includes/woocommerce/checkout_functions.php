@@ -49,6 +49,7 @@ function montepisanotree_get_cart_json()
 
 
 add_filter('woocommerce_checkout_fields', function ($fields) {
+    
     $dedicationProducts = montepisanotree_dedication_product_types();
     $json = WC()->session->get(MPT_SESSION_JSON_KEY);
     if ($json) {
@@ -58,7 +59,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
                 if (is_array($arr)) :
                     foreach ($arr as $data) {
                         if (isset($data['id']) && in_array(strtolower($type), $dedicationProducts)) {
-                            $fields['order'][$data['id']] = array(
+                            $fields['billing'][$data['id']] = array(
                                 'type'        => 'textarea',
                                 'label'       => __('Dedication for tree', 'woocommerce') . ' ' . $data['id'] . ' ' . ucfirst($type),
                                 'class'       => array('notes'),
@@ -71,7 +72,9 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
             }
         }
     }
-
+    echo '<pre>';
+    echo print_r($fields);
+    echo '</pre>';
     return $fields;
 });
 
