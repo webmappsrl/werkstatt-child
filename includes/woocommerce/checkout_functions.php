@@ -59,12 +59,14 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
                 if (is_array($arr)) :
                     foreach ($arr as $data) {
                         if (isset($data['id']) && in_array(strtolower($type), $dedicationProducts)) {
+                            $terms = get_the_terms( $data['id'] , 'webmapp_category' );
+                            $title = get_the_title($data['id']);
                             $fields['billing'][$data['id']] = array(
                                 'type'        => 'textarea',
-                                'label'       => __('Dedication for tree', 'woocommerce') . ' ' . $data['id'] . ' ' . ucfirst($type),
+                                'label'       => __('Dedication for tree', 'wm-child-mpt') . ' ' . $terms[0]->name . ' ' . $title . ' ' . ucfirst($type),
                                 'class'       => array('notes'),
                                 'required'    => false,
-                                'placeholder' => esc_attr__('Insert here your tree dedication', 'woocommerce'),
+                                'placeholder' => esc_attr__('Insert here your tree dedication', 'wm-child-mpt'),
                             );
                         }
                     }
