@@ -145,8 +145,8 @@ add_action('woocommerce_order_status_completed', function ($order_id, $order) {
                 'redirection' => 5,
                 'httpversion' => '1.0',
                 'blocking'    => true,
-                'headers'     => array(),
-                'body'        => $requestJson,
+                'headers'     => array('Content-Type' => 'application/json; charset=utf-8'),
+                'body'        => json_encode($requestJson),
                 'cookies'     => array()
             )
         );
