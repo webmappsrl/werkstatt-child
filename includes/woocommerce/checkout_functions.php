@@ -72,9 +72,6 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
             }
         }
     }
-    echo '<pre>';
-    echo print_r($fields);
-    echo '</pre>';
     return $fields;
 });
 
