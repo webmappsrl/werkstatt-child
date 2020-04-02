@@ -63,10 +63,10 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
                             $title = get_the_title($data['id']);
                             $fields['billing'][$data['id']] = array(
                                 'type'        => 'textarea',
-                                'label'       => __('Dedication for tree', 'wm-child-mpt') . ' ' . $terms[0]->name . ' ' . $title . ' ' . ucfirst($type),
+                                'label'       => __('Nome su targhetta', 'wm-child-mpt') . ' ' . $terms[0]->name . ' ' . $title . ' ' . ucfirst($type),
                                 'class'       => array('notes'),
                                 'required'    => false,
-                                'placeholder' => esc_attr__('Insert here your tree dedication', 'wm-child-mpt'),
+                                'placeholder' => esc_attr__('Inserisci qui il nome che vuoi mettere sulla targhetta (Es. \'Luca e Martina\',\'Vittorio\' o \'Famiglia Rossi\'...). Lasciando questo campo vuoto, sulla targhetta verrà stampato il nome inserito nei dettagli di fatturazione.	', 'wm-child-mpt'),
                             );
                         }
                     }
