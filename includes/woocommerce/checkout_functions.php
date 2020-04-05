@@ -2,6 +2,7 @@
 
 define('MPT_SESSION_JSON_KEY', 'order_json');
 define('MPT_ORDER_JSON_KEY', 'order_json');
+define('MPT_ORDER_PAID_DATE', 'order_paid_date');
 define('MPT_POI_PAID_DATE', 'paid_date');
 
 function montepisanotree_dedication_product_types()
@@ -18,14 +19,20 @@ function montepisanotree_get_cart_json()
 {
     $cart = WC()->cart->get_cart();
     $order_json = array();
+    $order_paid_date = $_POST['orderPaidDate'];
+    $orderPaidDateSession = WC()->session->get('orderPaidDateSession');
+    if ($orderPaidDateSession) {
+        $order_json['paid_date'] = date("d/m/Y",strtotime($orderPaidDateSession));
+    }
     foreach ($cart as $key => $val) {
         $item = array();
         $poi_id = $val['idpoi'];
+        $poi_dedication = $val['dedpoi'];
         $poi_title = get_the_title($poi_id);
         $name = $val['data']->get_name();
         $item['id'] = $poi_id;
         $item['title'] = $poi_title;
-        $item['dedication'] = '';
+        $item['dedication'] = $poi_dedication;
         if ($name == 'Friendship') {
             $order_json['friendship'][] = $item;
         }
@@ -70,6 +77,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
                                 'class'       => array('notes'),
                                 'required'    => false,
                                 'placeholder' => esc_attr__('Inserisci qui il nome che vuoi mettere sulla targhetta (Es. \'Luca e Martina\',\'Vittorio\' o \'Famiglia Rossi\'...). Lasciando questo campo vuoto, sulla targhetta verrà stampato il nome inserito nei dettagli di fatturazione.	', 'wm-child-mpt'),
+                                'default'     => $data['dedication']
                             );
                         }
                     }
@@ -83,6 +91,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
 add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_data, $order) {
     $dedicationProducts = montepisanotree_dedication_product_types();
     $current_date = date('Ymd');
+    $order_paid_date = '';
     $order = wc_get_order( $order_id );
     $order_items  = $order->get_items();
     $array_id = array();
@@ -90,11 +99,20 @@ add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_
     if ($json) {
         $jsonPhp = json_decode($json, true);
         foreach ($jsonPhp as $type => $arr) {
+            if ($type == 'paid_date') {
+                $order_paid_date = $arr;
+                $next_order_paid_date = date("Ymd", strtotime("+1 years", strtotime($arr)));
+                update_field(MPT_ORDER_PAID_DATE, $next_order_paid_date, $order_id);
+            }
             if (is_array($arr)) :
                 foreach ($arr as $k => $data) :
                     if (isset($data['id'])) {
                         $array_id[] = $data['id'];
-                        update_field( MPT_POI_PAID_DATE , $current_date , $data['id'] );
+                        if ($order_paid_date) {
+                            update_field( MPT_POI_PAID_DATE , $order_paid_date , $data['id'] );
+                        } else {
+                            update_field( MPT_POI_PAID_DATE , $current_date , $data['id'] );
+                        }
                     }
                 endforeach;
                 if (in_array(strtolower($type), $dedicationProducts)) :
@@ -127,7 +145,6 @@ add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_
 
 
 add_action('woocommerce_order_status_completed', function ($order_id, $order) {
-
 
     $requestJson = array(
         'instance' => home_url(),

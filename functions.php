@@ -49,63 +49,63 @@ function wc_remove_all_quantity_fields($return, $product)
 }
 add_filter('woocommerce_is_sold_individually', 'wc_remove_all_quantity_fields', 10, 2);
 
-add_action('poi_single_product_summary', 'custom_woocommerce_single_product_summary', 15);
-function custom_woocommerce_single_product_summary()
-{
-    $arg = array(
-        'limit' => 1000,
-        'status' => array('completed', 'processing'),
-    );
-    $orders = wc_get_orders($arg);
-    foreach ($orders as $order) {
-        foreach ($order->get_items() as $item_id => $item) {
-            $product_name_variation = $item->get_name();
-            $product_name = preg_replace('/[^0-9]/', '', $product_name_variation); //substr($product_name_variation,0,3);
-            global $product;
-            $current_product_name = $product->name;
-            if ($product_name == $current_product_name) {
-                $counter = true;
-                $current_order_id = $item['order_id'];
-                $order_meta = get_post_meta($current_order_id);
-                $current_paid_date = $order_meta['_paid_date'][0];
-                $next_availible_date = date("Y-m-d", strtotime("+1 years +1 days", strtotime($order_meta['_paid_date'][0])));
-                $current_date = date("Y-m-d");
-            }
-        }
-    }
-    if ($counter == true &&  $current_date < $next_availible_date) {
-        mostraProdottoComprato($current_order_id);
-    } else {
-        mostraPrezzo();
-    }
-}
-function OLD_mostraPulsanteAdotta()
-{
-    $arg = array(
-        'limit' => 1000,
-        'status' => array('completed', 'processing'),
-    );
-    $orders = wc_get_orders($arg);
-    foreach ($orders as $order) {
-        foreach ($order->get_items() as $item_id => $item) {
-            $product_name_variation = $item->get_name();
-            $product_name = preg_replace('/[^0-9]/', '', $product_name_variation); //substr($product_name_variation,0,3);
-            global $product;
-            $current_product_name = $product->name;
-            if ($product_name == $current_product_name) {
-                $counter = true;
-                $current_order_id = $item['order_id'];
-                $order_meta = get_post_meta($current_order_id);
-                $current_paid_date = $order_meta['_paid_date'][0];
-                $next_availible_date = date("Y-m-d", strtotime("+1 years +1 days", strtotime($order_meta['_paid_date'][0])));
-                $current_date = date("Y-m-d");
-            }
-        }
-    }
-    if ($counter == true &&  $current_date < $next_availible_date) { } else {
-        echo do_shortcode('<div class="button-adottaora large-3 columns">[thb_button link="url:%23adottaora|title:Adotta%20ora!||"]</div>');
-    }
-}
+// add_action('poi_single_product_summary', 'custom_woocommerce_single_product_summary', 15);
+// function custom_woocommerce_single_product_summary()
+// {
+//     $arg = array(
+//         'limit' => 1000,
+//         'status' => array('completed', 'processing'),
+//     );
+//     $orders = wc_get_orders($arg);
+//     foreach ($orders as $order) {
+//         foreach ($order->get_items() as $item_id => $item) {
+//             $product_name_variation = $item->get_name();
+//             $product_name = preg_replace('/[^0-9]/', '', $product_name_variation); //substr($product_name_variation,0,3);
+//             global $product;
+//             $current_product_name = $product->name;
+//             if ($product_name == $current_product_name) {
+//                 $counter = true;
+//                 $current_order_id = $item['order_id'];
+//                 $order_meta = get_post_meta($current_order_id);
+//                 $current_paid_date = $order_meta['_paid_date'][0];
+//                 $next_availible_date = date("Y-m-d", strtotime("+1 years +1 days", strtotime($order_meta['_paid_date'][0])));
+//                 $current_date = date("Y-m-d");
+//             }
+//         }
+//     }
+//     if ($counter == true &&  $current_date < $next_availible_date) {
+//         mostraProdottoComprato($current_order_id);
+//     } else {
+//         mostraPrezzo();
+//     }
+// }
+// function OLD_mostraPulsanteAdotta()
+// {
+//     $arg = array(
+//         'limit' => 1000,
+//         'status' => array('completed', 'processing'),
+//     );
+//     $orders = wc_get_orders($arg);
+//     foreach ($orders as $order) {
+//         foreach ($order->get_items() as $item_id => $item) {
+//             $product_name_variation = $item->get_name();
+//             $product_name = preg_replace('/[^0-9]/', '', $product_name_variation); //substr($product_name_variation,0,3);
+//             global $product;
+//             $current_product_name = $product->name;
+//             if ($product_name == $current_product_name) {
+//                 $counter = true;
+//                 $current_order_id = $item['order_id'];
+//                 $order_meta = get_post_meta($current_order_id);
+//                 $current_paid_date = $order_meta['_paid_date'][0];
+//                 $next_availible_date = date("Y-m-d", strtotime("+1 years +1 days", strtotime($order_meta['_paid_date'][0])));
+//                 $current_date = date("Y-m-d");
+//             }
+//         }
+//     }
+//     if ($counter == true &&  $current_date < $next_availible_date) { } else {
+//         echo do_shortcode('<div class="button-adottaora large-3 columns">[thb_button link="url:%23adottaora|title:Adotta%20ora!||"]</div>');
+//     }
+// }
 
 function mostraPulsanteAdotta()
 {
@@ -160,12 +160,12 @@ function mostraPrezzo($post_id)
     $products = wc_get_products(array(
         'category' => array('mpt-category'),
     ));
-    // $product_1 = wc_get_product('6887');
-    // $product_2 = wc_get_product('6888');
-    // $product_3 = wc_get_product('6889');
-    $product_1 = wc_get_product('6884');
-    $product_2 = wc_get_product('6885');
-    $product_3 = wc_get_product('6886');
+    $product_1 = wc_get_product('6887');
+    $product_2 = wc_get_product('6888');
+    $product_3 = wc_get_product('6889');
+    // $product_1 = wc_get_product('6884');
+    // $product_2 = wc_get_product('6885');
+    // $product_3 = wc_get_product('6886');
 
     
     echo $product_1->get_description();
@@ -205,6 +205,8 @@ function wm_add_poi_id_to_cart_item( $cart_item_data, $product_id, $variation_id
     // $post_id = filter_input( INPUT_POST, 'idpoi' );
     
     $post_id = intval($_POST['idpoi']);
+    $post_ded = $_POST['dedpoi'];
+
     $post = get_post($post_id);
 
     if (!$post instanceof WP_Post) {
@@ -227,6 +229,9 @@ function wm_add_poi_id_to_cart_item( $cart_item_data, $product_id, $variation_id
     }
 
     $cart_item_data['idpoi'] = $post_id;
+    if ($post_ded) {
+        $cart_item_data['dedpoi'] = $post_ded;
+    }
  
     return $cart_item_data;
 }
@@ -370,3 +375,22 @@ function custom_button_proceed_to_custom_page()
     </a>
 <?php
 }
+
+/**
+ * Handle a custom 'customvar' query var to get orders with the 'customvar' meta.
+ * @param array $query - Args for WP_Query.
+ * @param array $query_vars - Query vars from WC_Order_Query.
+ * @return array modified $query
+ */
+// function handle_custom_query_var( $query, $query_vars ) {
+// 	if ( ! empty( $query_vars['_paid_date'] ) ) {
+//         $current_paid_date = date("d/m/Y", $query_vars['_paid_date']);
+// 		$query['meta_query'][] = array(
+// 			'key' => '_paid_date',
+// 			'value' => esc_attr( $query_vars['_paid_date'] ),
+// 		);
+// 	}
+
+// 	return $query;
+// }
+// add_filter( 'woocommerce_order_data_store_cpt_get_orders_query', 'handle_custom_query_var', 10, 2 );
