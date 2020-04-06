@@ -200,6 +200,17 @@ function mostraPrezzo($post_id)
     echo '<div class="back-to-map"><a href="https://montepisanotree.org/mappa">o torna alla mappa</a></div>';
 }
 
+/**
+ * DEBUG TOOLS
+ * Debug email content
+ * TODO: remove this hook usage
+*/
+add_filter( 'wp_mail', function($wp_mail){
+    $wp_mail['to'] = 'alessiopiccioli@webmapp.it';
+    return $wp_mail;
+} , 10 , 1 );
+
+
 // Adds custom input data to WC_CART
 function wm_add_poi_id_to_cart_item( $cart_item_data, $product_id, $variation_id ) {
     // $post_id = filter_input( INPUT_POST, 'idpoi' );
