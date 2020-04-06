@@ -160,12 +160,12 @@ function mostraPrezzo($post_id)
     $products = wc_get_products(array(
         'category' => array('mpt-category'),
     ));
-    // $product_1 = wc_get_product('6887');
-    // $product_2 = wc_get_product('6888');
-    // $product_3 = wc_get_product('6889');
-    $product_1 = wc_get_product('6884');
-    $product_2 = wc_get_product('6885');
-    $product_3 = wc_get_product('6886');
+    $product_1 = wc_get_product('6887');
+    $product_2 = wc_get_product('6888');
+    $product_3 = wc_get_product('6889');
+    // $product_1 = wc_get_product('6884');
+    // $product_2 = wc_get_product('6885');
+    // $product_3 = wc_get_product('6886');
 
     
     echo $product_1->get_description();

@@ -20,14 +20,7 @@ function montepisanotree_get_cart_json()
     $cart = WC()->cart->get_cart();
     $order_json = array();
     $order_paid_date = $_POST['orderPaidDate'];
-    $orderPaidDateSession = WC()->session->get('orderPaidDateSession');
-    if ($orderPaidDateSession) {
-        $order_json['paid_date'] = date("d/m/Y",strtotime($orderPaidDateSession));
-    } else {
-        $order_json['first_paid_date'] = date("d/m/Y");
-    }
-    WC()->session->__unset( 'orderPaidDateSession' );
-    WC()->session->set( 'orderPaidDateSession', null );
+    
     foreach ($cart as $key => $val) {
         $item = array();
         $poi_id = $val['idpoi'];
@@ -102,6 +95,13 @@ add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_
     $json = WC()->session->get(MPT_SESSION_JSON_KEY);
     if ($json) {
         $jsonPhp = json_decode($json, true);
+        $orderPaidDateSession = WC()->session->get('orderPaidDateSession');
+        if ($orderPaidDateSession) {
+            $jsonPhp['paid_date'] = date("d/m/Y",strtotime($orderPaidDateSession));
+        } else {
+            $jsonPhp['first_paid_date'] = date("d/m/Y");
+        }
+        WC()->session->set( 'orderPaidDateSession', null );
         foreach ($jsonPhp as $type => $arr) {
             if ($type == 'paid_date') {
                 $order_paid_date = $arr;
