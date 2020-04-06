@@ -23,7 +23,11 @@ function montepisanotree_get_cart_json()
     $orderPaidDateSession = WC()->session->get('orderPaidDateSession');
     if ($orderPaidDateSession) {
         $order_json['paid_date'] = date("d/m/Y",strtotime($orderPaidDateSession));
+    } else {
+        $order_json['first_paid_date'] = date("d/m/Y");
     }
+    WC()->session->__unset( 'orderPaidDateSession' );
+    WC()->session->set( 'orderPaidDateSession', null );
     foreach ($cart as $key => $val) {
         $item = array();
         $poi_id = $val['idpoi'];
@@ -103,6 +107,9 @@ add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_
                 $order_paid_date = $arr;
                 $next_order_paid_date = date("Ymd", strtotime("+1 years", strtotime($arr)));
                 update_field(MPT_ORDER_PAID_DATE, $next_order_paid_date, $order_id);
+            } elseif ($type == 'first_paid_date') {
+                $first_order_paid_date = date("Ymd", strtotime($arr));
+                update_field(MPT_ORDER_PAID_DATE, $first_order_paid_date, $order_id);
             }
             if (is_array($arr)) :
                 foreach ($arr as $k => $data) :
