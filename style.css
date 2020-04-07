@@ -49,8 +49,22 @@ You can start adding your own styles here. Use !important to overwrite styles if
 .single_add_to_cart_button.button {
     justify-content: center;
     min-width: 160px;
+    float: left;
 }
 
+.mpt-product-price {
+    float: left;
+    line-height: 44px;
+    color: white;
+    padding-left: 20px;
+}
+.adotta-ora-cell .cart {
+    display: inline-block;
+}
+.mpt-product-desc {
+    width: 100%;
+    margin-bottom: 20px;
+}
 .single_add_to_cart_button.button:disabled {
     cursor: text;
     background-color: #afafaf;

@@ -139,37 +139,31 @@ function mostraPrezzo($post_id)
     $friendship = wc_get_product($product_friendship->ID);
     $love = wc_get_product($product_love->ID);
     $passion = wc_get_product($product_passion->ID);
-
-    echo $friendship->get_description();
-    echo wc_price($friendship->get_price());
     ?>
+
     <form class="cart" action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $friendship->get_permalink())); ?>" method="post" enctype='multipart/form-data'>
         <input name="idpoi" type="hidden" value="<?= $post_id ?>">
         <button type="submit" data-poi="<?= $post_id ?>" name="add-to-cart" value="<?php echo esc_attr($friendship->get_id()); ?>" class="single_add_to_cart_button button alt" <?php if($cart_has_poi_name == 'Friendship'){ echo 'disabled';} ?>><?php echo esc_html($friendship->get_name()); ?></button>
-
+        <div class="mpt-product-price"><?php echo wc_price($friendship->get_price());?></div>
     </form>
-    <?php
-    
-    echo $love->get_description();
-    echo wc_price($love->get_price());
-    ?>
+    <div class="mpt-product-desc"><?php echo $friendship->get_description();?></div>
+
     <form class="cart" action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $love->get_permalink())); ?>" method="post" enctype='multipart/form-data'>
         <input name="idpoi" type="hidden" value="<?= $post_id ?>">
         <button type="submit" data-poi="<?= $post_id ?>" name="add-to-cart" value="<?php echo esc_attr($love->get_id()); ?>" class="single_add_to_cart_button button alt" <?php if($cart_has_poi_name == 'Love'){ echo 'disabled';} ?>><?php echo esc_html($love->get_name()); ?></button>
-
+        <div class="mpt-product-price"><?php echo wc_price($love->get_price());?></div>
     </form>
-    <?php
-    echo $passion->get_description();
-    echo wc_price($passion->get_price());
-    ?>
+    <div class="mpt-product-desc"><?php echo $love->get_description();?></div>
+
     <form class="cart" action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $passion->get_permalink())); ?>" method="post" enctype='multipart/form-data'>
         <input name="idpoi" type="hidden" value="<?= $post_id ?>">
         <button type="submit" data-poi="<?= $post_id ?>" name="add-to-cart" value="<?php echo esc_attr($passion->get_id()); ?>" class="single_add_to_cart_button button alt" <?php if($cart_has_poi_name == 'Passion'){ echo 'disabled';} ?>><?php echo esc_html($passion->get_name()); ?></button>
-
+        <div class="mpt-product-price"><?php echo wc_price($passion->get_price());?></div>
     </form>
-    <?php
-        
-    echo '<div class="back-to-map"><a href="https://montepisanotree.org/mappa">o torna alla mappa</a></div>';
+    <div class="mpt-product-desc"><?php echo $passion->get_description();?></div>
+
+    <?php 
+    echo '<div class="back-to-map"><a href="'.home_url().'/mappa">o torna alla mappa</a></div>';
 }
 
 /**
