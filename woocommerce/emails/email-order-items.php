@@ -39,6 +39,20 @@ foreach ( $items as $item_id => $item ) :
 	// set the currect poi title and category for order item product name
 	$order_item_meta = wc_get_order_item_meta($item_id, 'idpoi', $single);
 	$idpoi = $order_item_meta[0]; 
+	$currentorder_id = $order->get_order_number();
+	$current_json = get_field('order_json',$currentorder_id);
+	$current_json = json_decode($current_json);
+	$dedpoi = ''; 
+	foreach ($current_json as $modality => $prodotti) {
+		if (is_array($prodotti)) :
+			foreach ( $prodotti as $prodotto) {
+				if ($idpoi == $prodotto->id){
+					$dedpoi = $prodotto->dedication;
+				}
+			}
+        endif;
+	}
+	
 	$poi_title = get_the_title( $idpoi );
 	$poi_permalink = get_permalink($idpoi);
 	$terms = get_the_terms( $idpoi , 'webmapp_category' );
@@ -56,9 +70,12 @@ foreach ( $items as $item_id => $item ) :
 
 		// Product name. -> default
 		// echo wp_kses_post( apply_filters( 'woocommerce_order_item_name', $item->get_name(), $item, false ) );
+
 		// Product name. -> wWebmapp
-		echo $item_name_poi;
-		
+		echo wp_kses_post($item_name_poi).'<br>';
+		if ($dedpoi) {
+			echo 'Dedica: '.$dedpoi;
+		}
 
 		// SKU.
 		if ( $show_sku && $sku ) {
