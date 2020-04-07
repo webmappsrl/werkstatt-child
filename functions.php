@@ -79,33 +79,6 @@ add_filter('woocommerce_is_sold_individually', 'wc_remove_all_quantity_fields', 
 //         mostraPrezzo();
 //     }
 // }
-// function OLD_mostraPulsanteAdotta()
-// {
-//     $arg = array(
-//         'limit' => 1000,
-//         'status' => array('completed', 'processing'),
-//     );
-//     $orders = wc_get_orders($arg);
-//     foreach ($orders as $order) {
-//         foreach ($order->get_items() as $item_id => $item) {
-//             $product_name_variation = $item->get_name();
-//             $product_name = preg_replace('/[^0-9]/', '', $product_name_variation); //substr($product_name_variation,0,3);
-//             global $product;
-//             $current_product_name = $product->name;
-//             if ($product_name == $current_product_name) {
-//                 $counter = true;
-//                 $current_order_id = $item['order_id'];
-//                 $order_meta = get_post_meta($current_order_id);
-//                 $current_paid_date = $order_meta['_paid_date'][0];
-//                 $next_availible_date = date("Y-m-d", strtotime("+1 years +1 days", strtotime($order_meta['_paid_date'][0])));
-//                 $current_date = date("Y-m-d");
-//             }
-//         }
-//     }
-//     if ($counter == true &&  $current_date < $next_availible_date) { } else {
-//         echo do_shortcode('<div class="button-adottaora large-3 columns">[thb_button link="url:%23adottaora|title:Adotta%20ora!||"]</div>');
-//     }
-// }
 
 function mostraPulsanteAdotta()
 {
@@ -160,39 +133,38 @@ function mostraPrezzo($post_id)
     $products = wc_get_products(array(
         'category' => array('mpt-category'),
     ));
-    // $product_1 = wc_get_product('6887');
-    // $product_2 = wc_get_product('6888');
-    // $product_3 = wc_get_product('6889');
-    $product_1 = wc_get_product('6884');
-    $product_2 = wc_get_product('6885');
-    $product_3 = wc_get_product('6886');
+    $product_friendship = get_page_by_title( 'Friendship', OBJECT, 'product' );
+    $product_love = get_page_by_title( 'Love', OBJECT, 'product' );
+    $product_passion = get_page_by_title( 'Passion', OBJECT, 'product' );
+    $friendship = wc_get_product($product_friendship->ID);
+    $love = wc_get_product($product_love->ID);
+    $passion = wc_get_product($product_passion->ID);
 
-    
-    echo $product_1->get_description();
-    echo wc_price($product_1->get_price());
+    echo $friendship->get_description();
+    echo wc_price($friendship->get_price());
     ?>
-    <form class="cart" action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product_1->get_permalink())); ?>" method="post" enctype='multipart/form-data'>
+    <form class="cart" action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $friendship->get_permalink())); ?>" method="post" enctype='multipart/form-data'>
         <input name="idpoi" type="hidden" value="<?= $post_id ?>">
-        <button type="submit" data-poi="<?= $post_id ?>" name="add-to-cart" value="<?php echo esc_attr($product_1->get_id()); ?>" class="single_add_to_cart_button button alt" <?php if($cart_has_poi_name == 'Friendship'){ echo 'disabled';} ?>><?php echo esc_html($product_1->get_name()); ?></button>
-
-    </form>
-    <?php
-    
-    echo $product_2->get_description();
-    echo wc_price($product_2->get_price());
-    ?>
-    <form class="cart" action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product_2->get_permalink())); ?>" method="post" enctype='multipart/form-data'>
-        <input name="idpoi" type="hidden" value="<?= $post_id ?>">
-        <button type="submit" data-poi="<?= $post_id ?>" name="add-to-cart" value="<?php echo esc_attr($product_2->get_id()); ?>" class="single_add_to_cart_button button alt" <?php if($cart_has_poi_name == 'Love'){ echo 'disabled';} ?>><?php echo esc_html($product_2->get_name()); ?></button>
+        <button type="submit" data-poi="<?= $post_id ?>" name="add-to-cart" value="<?php echo esc_attr($friendship->get_id()); ?>" class="single_add_to_cart_button button alt" <?php if($cart_has_poi_name == 'Friendship'){ echo 'disabled';} ?>><?php echo esc_html($friendship->get_name()); ?></button>
 
     </form>
     <?php
-    echo $product_3->get_description();
-    echo wc_price($product_3->get_price());
+    
+    echo $love->get_description();
+    echo wc_price($love->get_price());
     ?>
-    <form class="cart" action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $product_3->get_permalink())); ?>" method="post" enctype='multipart/form-data'>
+    <form class="cart" action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $love->get_permalink())); ?>" method="post" enctype='multipart/form-data'>
         <input name="idpoi" type="hidden" value="<?= $post_id ?>">
-        <button type="submit" data-poi="<?= $post_id ?>" name="add-to-cart" value="<?php echo esc_attr($product_3->get_id()); ?>" class="single_add_to_cart_button button alt" <?php if($cart_has_poi_name == 'Passion'){ echo 'disabled';} ?>><?php echo esc_html($product_3->get_name()); ?></button>
+        <button type="submit" data-poi="<?= $post_id ?>" name="add-to-cart" value="<?php echo esc_attr($love->get_id()); ?>" class="single_add_to_cart_button button alt" <?php if($cart_has_poi_name == 'Love'){ echo 'disabled';} ?>><?php echo esc_html($love->get_name()); ?></button>
+
+    </form>
+    <?php
+    echo $passion->get_description();
+    echo wc_price($passion->get_price());
+    ?>
+    <form class="cart" action="<?php echo esc_url(apply_filters('woocommerce_add_to_cart_form_action', $passion->get_permalink())); ?>" method="post" enctype='multipart/form-data'>
+        <input name="idpoi" type="hidden" value="<?= $post_id ?>">
+        <button type="submit" data-poi="<?= $post_id ?>" name="add-to-cart" value="<?php echo esc_attr($passion->get_id()); ?>" class="single_add_to_cart_button button alt" <?php if($cart_has_poi_name == 'Passion'){ echo 'disabled';} ?>><?php echo esc_html($passion->get_name()); ?></button>
 
     </form>
     <?php
@@ -206,7 +178,7 @@ function mostraPrezzo($post_id)
  * TODO: remove this hook usage
 */
 add_filter( 'wp_mail', function($wp_mail){
-    $wp_mail['to'] = 'alessiopiccioli@webmapp.it';
+    $wp_mail['to'] = 'pedramkat@gmail.com';
     return $wp_mail;
 } , 10 , 1 );
 
@@ -267,13 +239,6 @@ function wm_poi_thumb_title_cat_cart( $product_get_image, $cart_item, $cart_item
 }
 add_filter( 'woocommerce_cart_item_thumbnail', 'wm_poi_thumb_title_cat_cart', 10, 3 );
 
-//
-// function filter_woocommerce_order_item_name( $item_name, $item ) { 
-//     // $item_name = $terms[0]->name . ' - ' . $poi_title;
-//     // apply_filters( 'woocommerce_order_item_name', $item_name, $item, $is_visible );
-//     return $item_name; 
-// }; 
-// add_filter( 'woocommerce_order_item_name', 'filter_woocommerce_order_item_name', 10, 2 ); 
 
 /** change Aggiungi al carrello text */
 
