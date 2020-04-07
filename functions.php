@@ -239,6 +239,19 @@ function wm_poi_thumb_title_cat_cart( $product_get_image, $cart_item, $cart_item
 }
 add_filter( 'woocommerce_cart_item_thumbnail', 'wm_poi_thumb_title_cat_cart', 10, 3 );
 
+// display Poi thumbnail in cart
+function wm_poi_thumb_title_cat_cart_permalink( $product_get_permalink, $cart_item, $cart_item_key ) {
+   
+    if ( empty( $cart_item['idpoi'] ) ) {
+        return $product_get_permalink;
+    }
+    $product_get_permalink = '';
+    $product_get_permalink = get_permalink($cart_item['idpoi']);
+ 
+    return $product_get_permalink;
+}
+add_filter( 'woocommerce_cart_item_permalink', 'wm_poi_thumb_title_cat_cart_permalink', 10, 3 );
+
 
 /** change Aggiungi al carrello text */
 
