@@ -87,7 +87,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
 
 add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_data, $order) {
     $dedicationProducts = montepisanotree_dedication_product_types();
-    $current_date = date('Ydm');
+    $current_date = date('Ymd');
     $order_paid_date = '';
     $order = wc_get_order( $order_id );
     $order_items  = $order->get_items();
