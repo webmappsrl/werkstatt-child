@@ -85,6 +85,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
 });
 
 add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_data, $order) {
+    
     $dedicationProducts = montepisanotree_dedication_product_types();
     $current_date = date('Y-m-d');
     $order_paid_date = '';
@@ -96,11 +97,17 @@ add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_
         $jsonPhp = json_decode($json, true);
         $orderPaidDateSession = WC()->session->get('orderPaidDateSession');
         if ($orderPaidDateSession) {
+            $old_order_id = WC()->session->get('oldOrderId');
+            if ( $old_order_id )
+            {
+                montepisanotree_delete_token( $old_order_id );
+            }
             $jsonPhp['paid_date'] = date("Y-m-d",strtotime($orderPaidDateSession));
         } else {
             $jsonPhp['first_paid_date'] = date("Y-m-d");
         }
         WC()->session->set( 'orderPaidDateSession', null );
+        WC()->session->set( 'oldOrderId', null );
         foreach ($jsonPhp as $type => $arr) {
             if ($type == 'paid_date') {
                 $order_paid_date = $arr;

@@ -10,7 +10,15 @@
 <?php
 
     $order_id = $_GET['order_id'];
-    
+    $token = $_GET['token'];
+
+    $check = montepisanotree_check_token( $order_id , $token );
+    if( ! $check )
+    {
+        $homeLink = "<a href='" . home_url() . "'>Ritorna alla home.</a>";
+        wp_die( "Errore: Non puoi rinnovare quest'ordine. Token non valido. $homeLink" );
+    }
+        
     $order = wc_get_order($order_id);
     
     WC()->cart->empty_cart();
@@ -20,6 +28,7 @@
     $order_paid_date = get_field('order_paid_date',$order_id);
     if ($order_paid_date) {
         WC()->session->set('orderPaidDateSession', date('Y-m-d',strtotime($order_paid_date)));
+        WC()->session->set('oldOrderId', $order_id );
     }
     foreach ($current_json as $modality => $items) {
         if (is_array($items)) :

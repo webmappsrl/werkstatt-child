@@ -41,7 +41,6 @@ function montepisanotree_check_token( $order_id , $token ){
     
     if ( isset( $option[$order_id] ) && $option[$order_id] == $token )
     {
-        montepisanotree_delete_token( $order_id );
         return TRUE;
     }
 
