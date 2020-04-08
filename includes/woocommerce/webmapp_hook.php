@@ -63,7 +63,7 @@ add_filter( 'acf/update_value/name='.MPT_POI_PAID_DATE, function($value, $post_i
     $post = get_post( $post_id );
 
     if ( $post->post_type == 'poi' ) 
-        webmapp_server_hook_send_request( $post_id , 'mptupdatepoi' );
+        webmapp_server_hook_send_request( [ 'id' => $post_id ] , 'mptupdatepoi' );
 
     return $value;
 }, 10 , 3 );
@@ -77,6 +77,6 @@ add_action( "acf/delete_value", function( $post_id, $field_name, $field ){
     $post = get_post( $post_id );
 
     if ( $post->post_type == 'poi' ) 
-        webmapp_server_hook_send_request( $post_id , 'mptupdatepoi');
+        webmapp_server_hook_send_request( [ 'id' => $post_id ] , 'mptupdatepoi');
 
 } , 10 , 3 );
