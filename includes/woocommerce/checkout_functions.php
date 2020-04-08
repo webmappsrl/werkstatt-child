@@ -19,7 +19,6 @@ function montepisanotree_get_cart_json()
 {
     $cart = WC()->cart->get_cart();
     $order_json = array();
-    $order_paid_date = $_POST['orderPaidDate'];
     
     foreach ($cart as $key => $val) {
         $item = array();
@@ -87,7 +86,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
 
 add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_data, $order) {
     $dedicationProducts = montepisanotree_dedication_product_types();
-    $current_date = date('Ymd');
+    $current_date = date('Y-m-d');
     $order_paid_date = '';
     $order = wc_get_order( $order_id );
     $order_items  = $order->get_items();
@@ -97,18 +96,18 @@ add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_
         $jsonPhp = json_decode($json, true);
         $orderPaidDateSession = WC()->session->get('orderPaidDateSession');
         if ($orderPaidDateSession) {
-            $jsonPhp['paid_date'] = date("d/m/Y",strtotime($orderPaidDateSession));
+            $jsonPhp['paid_date'] = date("Y-m-d",strtotime($orderPaidDateSession));
         } else {
-            $jsonPhp['first_paid_date'] = date("d/m/Y");
+            $jsonPhp['first_paid_date'] = date("Y-m-d");
         }
         WC()->session->set( 'orderPaidDateSession', null );
         foreach ($jsonPhp as $type => $arr) {
             if ($type == 'paid_date') {
                 $order_paid_date = $arr;
-                $next_order_paid_date = date("Ydm", strtotime("+1 years", strtotime($arr)));
+                $next_order_paid_date = date("Y-m-d", strtotime("+1 years", strtotime($arr)));
                 update_field(MPT_ORDER_PAID_DATE, $next_order_paid_date, $order_id);
             } elseif ($type == 'first_paid_date') {
-                $first_order_paid_date = date("Ydm", strtotime($arr));
+                $first_order_paid_date = date("Y-m-d", strtotime($arr));
                 update_field(MPT_ORDER_PAID_DATE, $first_order_paid_date, $order_id);
             }
         }
@@ -118,7 +117,7 @@ add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_
                     if (isset($data['id'])) {
                         $array_id[] = $data['id'];
                         if ($order_paid_date) {
-                            $next_order_paid_date = date("Ymd", strtotime($next_order_paid_date));
+                            $next_order_paid_date = date("Y-m-d", strtotime($next_order_paid_date));
                             update_field( MPT_POI_PAID_DATE , $next_order_paid_date , $data['id'] );
                         } else {
                             update_field( MPT_POI_PAID_DATE , $current_date , $data['id'] );

@@ -33,7 +33,7 @@ function webmapp_server_hook_send_request($parameters,$hook='mptupdate')
         )
     );
 
-    error_log(print_r($requestJson), print_r($response));
+    // error_log(print_r($requestJson), print_r($response));
 
     if (is_wp_error($response)) {
         $error_message = $response->get_error_message();
