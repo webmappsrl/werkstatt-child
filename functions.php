@@ -168,11 +168,11 @@ function mostraPrezzo($post_id)
  * DEBUG TOOLS
  * Debug email content
  * TODO: remove this hook usage
+ add_filter( 'wp_mail', function($wp_mail){
+     $wp_mail['to'] = 'alessiopiccioli@webmapp.it';
+     return $wp_mail;
+    } , 10 , 1 );
 */
-add_filter( 'wp_mail', function($wp_mail){
-    $wp_mail['to'] = 'alessiopiccioli@webmapp.it';
-    return $wp_mail;
-} , 10 , 1 );
 
 
 // Adds custom input data to WC_CART
