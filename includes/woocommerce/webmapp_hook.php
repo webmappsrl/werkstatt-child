@@ -42,23 +42,23 @@ function webmapp_server_hook_send_request($parameters,$hook='mptupdate')
 }
 
 //** SEND HOOK ACTION ON ORDER COMPLETE **//
-add_action('woocommerce_order_status_completed', function ($order_id, $order) {
-    $parameters = [];
-    $json = get_field(MPT_ORDER_JSON_KEY, $order_id);
-    if ($json) :
-        $jsonPhp = json_decode($json, true);
-        foreach ($jsonPhp as $type => $arr) {
-            foreach ($arr as $data) {
-                $parameters = $data['id'];
-            }
-        }
-        webmapp_server_hook_send_request( $parameters );
+// add_action('woocommerce_order_status_completed', function ($order_id, $order) {
+//     $parameters = [];
+//     $json = get_field(MPT_ORDER_JSON_KEY, $order_id);
+//     if ($json) :
+//         $jsonPhp = json_decode($json, true);
+//         foreach ($jsonPhp as $type => $arr) {
+//             foreach ($arr as $data) {
+//                 $parameters = $data['id'];
+//             }
+//         }
+//         webmapp_server_hook_send_request( $parameters );
 
-    endif;
-}, 10, 2);
+//     endif;
+// }, 10, 2);
 
 //** SEND HOOK ACTION ON UPDATE paid_date field (only on POI post_type ) **//
-add_filter( 'acf/update_value/key='.MPT_POI_PAID_DATE, function($value, $post_id, $field){
+add_filter( 'acf/update_value/name='.MPT_POI_PAID_DATE, function($value, $post_id, $field){
     
     $post = get_post( $post_id );
 
