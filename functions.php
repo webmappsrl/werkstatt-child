@@ -127,12 +127,10 @@ function mostraPrezzo($post_id)
     }
     if (!empty($cart_has_poi_id)) {
         echo '<p><strong>Modifica il tuo acquisto cambiando opzione di adozione</strong></p>';
-        echo $cart_has_poi_name;
+        // echo $cart_has_poi_name;
     }
 
-    $products = wc_get_products(array(
-        'category' => array('mpt-category'),
-    ));
+    
     $product_friendship = get_page_by_title( 'Friendship', OBJECT, 'product' );
     $product_love = get_page_by_title( 'Love', OBJECT, 'product' );
     $product_passion = get_page_by_title( 'Passion', OBJECT, 'product' );
