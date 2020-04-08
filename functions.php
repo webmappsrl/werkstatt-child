@@ -172,7 +172,7 @@ function mostraPrezzo($post_id)
  * TODO: remove this hook usage
 */
 add_filter( 'wp_mail', function($wp_mail){
-    $wp_mail['to'] = 'alessiopiccioli@webmapp.it';
+    $wp_mail['to'] = 'pedramkat@gmail.com';
     return $wp_mail;
 } , 10 , 1 );
 

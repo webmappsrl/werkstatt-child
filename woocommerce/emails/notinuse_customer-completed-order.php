@@ -27,8 +27,8 @@ do_action( 'woocommerce_email_header', $email_heading, $email ); ?>
 <?php /* translators: %s: Customer first name */ ?>
 <p><?php printf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ); ?></p>
 <?php /* translators: %s: Site title */ ?>
-<p><?php esc_html__( 'la tua adozione è andata a buon fine! Ti ringraziamo per aver supportato il progetto Montepisanotree: qui di seguito troverai il dettaglio del tuo pagamento. Non esitare a contattarci per chiarimenti / approfondimenti: siamo a disposizione.', 'woocommerce' ); ?></p>
-<p><?php esc_html__( 'Il TEAM Montepisanotree', 'woocommerce' ); ?></p>
+<p>La tua adozione è andata a buon fine! Ti ringraziamo per aver supportato il progetto Montepisanotree: qui di seguito troverai il dettaglio del tuo pagamento. Non esitare a contattarci per chiarimenti / approfondimenti: siamo a disposizione.</p>
+<p>Il TEAM Montepisanotree</p>
 <?php
 
 /*
