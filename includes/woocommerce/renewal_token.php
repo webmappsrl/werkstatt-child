@@ -23,4 +23,27 @@ function montepisanotree_add_token( $order_id ){
     return $token;
 }
 
-function montepisanotree_check_token( $order_id , $token ){}
+function montepisanotree_delete_token( $order_id ){
+    $option = get_option( MPT_RENEW_ORDERS_TOKENS );
+    if ( $option === FALSE )//option doesnt exists
+        return FALSE;
+    if ( ! isset( $option[$order_id] ))//doesnt exists a token for this order
+        return FALSE;
+    unset( $option[$order_id] );
+    update_option(MPT_RENEW_ORDERS_TOKENS,$option);
+    return TRUE;
+}
+
+function montepisanotree_check_token( $order_id , $token ){
+    $option = get_option( MPT_RENEW_ORDERS_TOKENS );
+    if ( $option === FALSE )
+        return FALSE;
+    
+    if ( isset( $option[$order_id] ) && $option[$order_id] == $token )
+    {
+        montepisanotree_delete_token( $order_id );
+        return TRUE;
+    }
+
+    return FALSE;
+}
