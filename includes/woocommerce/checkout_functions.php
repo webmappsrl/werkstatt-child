@@ -86,6 +86,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     if ( $old_order_id )
     {
         $old_order = wc_get_order($old_order_id);
+        $order_meta = get_post_meta($old_order_id);
         $order_data = $old_order->get_data();
         $order_billing_first_name = $order_data['billing']['first_name'];
         $order_billing_last_name = $order_data['billing']['last_name'];
@@ -96,7 +97,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
         $order_billing_country = $order_data['billing']['country'];
         $order_billing_email = $order_data['billing']['email'];
         $order_billing_phone = $order_data['billing']['phone'];
-        $order_billing_codice_fiscale = $order_data['billing']['codice_fiscale'];
+        $order_billing_codice_fiscale = $order_meta['billing_codice_fiscale'][0];
 
         $fields['billing']['billing_first_name']['default'] =  $order_billing_first_name;
         $fields['billing']['billing_last_name']['default'] =  $order_billing_last_name;
