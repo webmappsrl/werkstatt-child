@@ -377,3 +377,28 @@ function custom_button_proceed_to_custom_page()
 // 	return $query;
 // }
 // add_filter( 'woocommerce_order_data_store_cpt_get_orders_query', 'handle_custom_query_var', 10, 2 );
+
+// Filter to remove the remove item x from cart and checkout page when a product is being renewed
+add_filter('woocommerce_cart_item_remove_link', 'wm_customized_cart_item_remove_link', 20, 2 );
+function wm_customized_cart_item_remove_link( $button_link, $cart_item_key ){
+
+    $old_order_id = WC()->session->get('oldOrderId');
+    if ( $old_order_id )
+    {
+        $button_link = '';
+    }
+    return $button_link;
+}
+
+/**
+ * Auto Complete all WooCommerce orders.
+ */
+// add_action( 'woocommerce_thankyou', 'custom_woocommerce_auto_complete_order' );
+// function custom_woocommerce_auto_complete_order( $order_id ) { 
+//     if ( ! $order_id ) {
+//         return;
+//     }
+
+//     $order = wc_get_order( $order_id );
+//     $order->update_status( 'completed' );
+// }

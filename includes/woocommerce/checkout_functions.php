@@ -109,6 +109,7 @@ add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_
         }
         WC()->session->set( 'orderPaidDateSession', null );
         WC()->session->set( 'oldOrderId', null );
+        
         foreach ($jsonPhp as $type => $arr) {
             if ($type == 'paid_date') {
                 $order_paid_date = $arr;
