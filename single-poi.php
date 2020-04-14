@@ -143,7 +143,7 @@ do_action( 'woocommerce_before_single_product' );
 			<div class="poi-cell poi-info summary entry-summary small-12 large-6 columns adotta-ora-cell-main">
 				<div class="adotta-ora-cell">
 
-				<?php
+                <?php
                     // do_action( 'poi_single_product_summary' );
                     $paid_date = get_field('paid_date',$post_id);
                     if ( isset($paid_date) &&  $paid_date) {
