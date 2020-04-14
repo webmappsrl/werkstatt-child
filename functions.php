@@ -247,6 +247,16 @@ function wm_poi_thumb_title_cat_cart_permalink( $product_get_permalink, $cart_it
 add_filter( 'woocommerce_cart_item_permalink', 'wm_poi_thumb_title_cat_cart_permalink', 10, 3 );
 
 
+// bonifico only for logged in users
+add_filter( "woocommerce_available_payment_gateways", "wm_mpt_filter_gateways", 100 );
+
+function wm_mpt_filter_gateways($args) {
+ if(!is_user_logged_in() && isset($args['bacs'])) {
+  unset($args['bacs']);
+ }
+ return $args;
+}
+
 /** change Aggiungi al carrello text */
 
 function woo_custom_cart_button_text()
