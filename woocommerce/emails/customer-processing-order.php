@@ -27,7 +27,7 @@ do_action( 'woocommerce_email_header', $email_heading, $email ); ?>
 <?php /* translators: %s: Customer first name */ ?>
 <p><?php printf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ); ?></p>
 <?php /* translators: %s: Order number */ ?>
-<p>La tua adozione è andata a buon fine! Ti ringraziamo per aver supportato il progetto Montepisanotree: qui di seguito troverai il dettaglio del tuo pagamento. Non esitare a contattarci per chiarimenti / approfondimenti: siamo a disposizione.</p>
+<p>La tua adozione è andata a buon fine! Ti ringraziamo per aver supportato il progetto Montepisanotree. A breve riceverai una mail che attesta la tua adozione e le tempistiche necessarie perché tu possa ritirare la targhetta Non esitare a contattarci per chiarimenti / approfondimenti: siamo a disposizione.</p>
 <p>Il TEAM Montepisanotree</p>
 
 <?php
