@@ -26,6 +26,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 <?php /* translators: %s: Customer first name */ 
 $tree_types = montepisanotree_tree_modality_types($order);
+$tree_quantity = montepisanotree_tree_quantity_inorder($order);
+$single_tree_order = __( 'la targhetta è pronta per essere ritirata e collocata sul tuo albero. Puoi ritirarla', 'montepisanotree' );
+$multi_tree_order = __( 'le targhette sono pronte per essere ritirate e collocate sui tuoi alberi. Puoi ritirarle', 'montepisanotree' );
+if (count($tree_quantity) > 1 ){
+	$targhet_number = $multi_tree_order;
+} else {
+	$targhet_number = $single_tree_order;
+}
 ?>
 
 <?php /* translators: %s: Site title */ ?>
@@ -33,15 +41,14 @@ $tree_types = montepisanotree_tree_modality_types($order);
 	do_action( 'woocommerce_email_header', "Certificato di adozione", $email );
 ?>
 <p><?php printf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ); ?></p>
-<p>Ti confermiamo che l’adozione è stata confermata. Qua sotto trovi un breve riepilogo. Grazie ancora per aver supportato il progetto MontepisanoTree.
-</p>
+<p><?php esc_html__( 'Ti confermiamo che l’adozione è stata confermata. Qua sotto trovi un breve riepilogo. Grazie ancora per aver supportato il progetto MontepisanoTree.', 'montepisanotree' ); ?></p>
 <?php else: 
 	do_action( 'woocommerce_email_header', "Ritira la tua targhetta", $email );
 ?>
 <p><?php printf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ); ?></p>
-<p>Ti informiamo che la targhetta è pronta per essere ritirata e collocata sul tuo albero. Puoi ritirarla tutti i giorni dal lunedì al venerdì dalle ore 9:00 alle 18:00 ed il sabato dalle 9 alle 13 presso il nostro Store in Largo P. B.Shelley, 20, 56017 San Giuliano Terme PI. Grazie ancora</p>
+<p><?php printf(esc_html__( 'Ti informiamo che %s tutti i giorni dal lunedì al venerdì dalle ore 9:00 alle 18:00 ed il sabato dalle 9 alle 13 presso il nostro Store in Largo P. B.Shelley, 20, 56017 San Giuliano Terme PI. Grazie ancora', 'montepisanotree' ),$targhet_number); ?></p>
 <?php endif; ?>
-<p>Il TEAM Montepisanotree</p>
+<p><?php esc_html__( 'Il TEAM Montepisanotree', 'montepisanotree' ); ?></p>
 <?php
 
 /*

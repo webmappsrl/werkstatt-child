@@ -20,12 +20,23 @@ defined( 'ABSPATH' ) || exit;
 /*
  * @hooked WC_Emails::email_header() Output the email header
  */
-do_action( 'woocommerce_email_header', $email_heading, $email ); ?>
+do_action( 'woocommerce_email_header', $email_heading, $email ); 
+$tree_quantity = montepisanotree_tree_quantity_inorder($order);
+$single_tree_order = __( 'la tua targhetta sarà pronta', 'montepisanotree' );
+$multi_tree_order = __( 'le tue targhette saranno pronte', 'montepisanotree' );
+if (count($tree_quantity) > 1 ){
+	$targhet_number = $multi_tree_order;
+} else {
+	$targhet_number = $single_tree_order;
+}
+$delivery_date = get_field('target_delivery_date',$order->ID);
+$contact_us = '<a href="'.home_url().'/info-contatti/">Clicca qui per maggiori informazioni</a>';
+?>
 
 <?php /* translators: %s: Customer first name */ ?>
 <p><?php printf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ); ?></p>
-<p><?php esc_html_e( 'Thanks for your order. It’s on-hold until we confirm that payment has been received. In the meantime, here’s a reminder of what you ordered:', 'woocommerce' ); ?></p>
-
+<p><?php printf(esc_html__( 'Ti comunichiamo che %s per essere ritirata presso il nostro store in Largo P. B.Shelley, 20, 56017 San Giuliano Terme PI dal: %s. %s', 'montepisanotree' ),$targhet_number, $delivery_date, $contact_us); ?></p>
+<p><?php esc_html_e( 'Il TEAM Montepisanotree', 'montepisanotree' );?></p>
 <?php
 
 /*

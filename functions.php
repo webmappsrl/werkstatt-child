@@ -403,6 +403,29 @@ function montepisanotree_tree_modality_types($order)
     return $tree_types;
 }
 
+function montepisanotree_tree_quantity_inorder($order)
+{
+    $json = get_field("order_json", $order->ID);
+    $treesmodalityallowed = array(
+        'passion',
+        'love'
+    );
+    $tree_quantity = array();
+    if ($json) {
+        $jsonPhp = json_decode($json, true);
+        if (is_array($jsonPhp)) {
+            foreach ($jsonPhp as $type => $arr) {
+                if (in_array(strtolower($type), $treesmodalityallowed)) {
+                    foreach ($arr as $tree) {
+                        array_push($tree_quantity, $tree['id']);
+                    }
+                }
+            }
+        }
+    }
+    return $tree_quantity;
+}
+
 
 add_filter('woocommerce_email_subject_customer_completed_order', 'change_client_email_subject_order_complete', 1, 2);
 
@@ -414,4 +437,16 @@ function change_client_email_subject_order_complete( $subject, $order ) {
         $subject = "La tua targhetta è pronta!";
     }
 	return $subject;
+}
+
+// Add new order status for email notification from processing to on-hold il lavorazione a sospeso
+add_filter( 'woocommerce_email_actions', 'add_another_email_action' );
+    function add_another_email_action( $array ) {
+    $array[]='woocommerce_order_status_processing_to_on-hold';
+    return $array;
+}
+
+add_action( 'woocommerce_email', 'hook_another_email_on_hold' );
+    function hook_another_email_on_hold( $email_class ) {
+    add_action( 'woocommerce_order_status_processing_to_on-hold_notification', array( $email_class->emails['WC_Email_Customer_On_Hold_Order'], 'trigger' ) );
 }
