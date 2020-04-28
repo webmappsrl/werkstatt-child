@@ -29,10 +29,10 @@ $tree_types = montepisanotree_tree_modality_types($order);
 <p><?php printf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ); ?></p>
 <?php /* translators: %s: Order number */ ?>
 <?php if (count($tree_types) == 1 && $tree_types[0] == "friendship") :?>
-<p><?php esc_html__( 'La tua adozione è andata a buon fine! Ti ringraziamo per aver supportato il progetto Montepisanotree. A breve riceverai una mail che conferma l\'adozione del tuo albero. Non esitare a contattarci, siamo a disposizione per chiarimenti e approfondimenti.', 'montepisanotree' ); ?></p>
+<p><?php esc_html_e( 'La tua adozione è andata a buon fine! Ti ringraziamo per aver supportato il progetto Montepisanotree. A breve riceverai una mail che conferma l\'adozione del tuo albero. Non esitare a contattarci, siamo a disposizione per chiarimenti e approfondimenti.', 'montepisanotree' ); ?></p>
 <?php else: ?>
 <p></p>
-<p><?php esc_html__( 'La tua adozione è andata a buon fine! Ti ringraziamo per aver supportato il progetto Montepisanotree. A breve riceverai una mail che conferma l\'adozione del tuo albero con le indicazioni per ritirare la targhetta. Non esitare a contattarci, siamo a disposizione per chiarimenti e approfondimenti.', 'montepisanotree' ); ?></p>
+<p><?php esc_html_e( 'La tua adozione è andata a buon fine! Ti ringraziamo per aver supportato il progetto Montepisanotree. A breve riceverai una mail che conferma l\'adozione del tuo albero con le indicazioni per ritirare la targhetta. Non esitare a contattarci, siamo a disposizione per chiarimenti e approfondimenti.', 'montepisanotree' ); ?></p>
 <?php endif; ?>
 <p><?php esc_html_e( 'Il TEAM Montepisanotree', 'montepisanotree' );?></p>
 <?php

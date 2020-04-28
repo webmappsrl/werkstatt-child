@@ -41,14 +41,14 @@ if (count($tree_quantity) > 1 ){
 	do_action( 'woocommerce_email_header', "Certificato di adozione", $email );
 ?>
 <p><?php printf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ); ?></p>
-<p><?php esc_html__( 'Ti confermiamo che l’adozione è stata confermata. Qua sotto trovi un breve riepilogo. Grazie ancora per aver supportato il progetto MontepisanoTree.', 'montepisanotree' ); ?></p>
+<p><?php esc_html_e( 'Ti confermiamo che l’adozione è stata confermata. Qua sotto trovi un breve riepilogo. Grazie ancora per aver supportato il progetto MontepisanoTree.', 'montepisanotree' ); ?></p>
 <?php else: 
 	do_action( 'woocommerce_email_header', "Ritira la tua targhetta", $email );
 ?>
 <p><?php printf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ); ?></p>
 <p><?php printf(esc_html__( 'Ti informiamo che %s tutti i giorni dal lunedì al venerdì dalle ore 9:00 alle 18:00 ed il sabato dalle 9 alle 13 presso il nostro Store in Largo P. B.Shelley, 20, 56017 San Giuliano Terme PI. Grazie ancora', 'montepisanotree' ),$targhet_number); ?></p>
 <?php endif; ?>
-<p><?php esc_html__( 'Il TEAM Montepisanotree', 'montepisanotree' ); ?></p>
+<p><?php esc_html_e( 'Il TEAM Montepisanotree', 'montepisanotree' ); ?></p>
 <?php
 
 /*
