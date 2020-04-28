@@ -350,25 +350,6 @@ function wc_empty_cart_redirect_url()
 add_filter('woocommerce_return_to_shop_redirect', 'wc_empty_cart_redirect_url');
 
 
-// For cart page: replacing proceed to checkout button
-add_action('woocommerce_proceed_to_checkout', 'change_proceed_to_checkout', 1);
-function change_proceed_to_checkout()
-{
-    remove_action('woocommerce_proceed_to_checkout', 'woocommerce_button_proceed_to_checkout', 20);
-    add_action('woocommerce_proceed_to_checkout', 'custom_button_proceed_to_custom_page', 20);
-}
-// Cart page: Displays the replacement custom button linked to your custom page
-function custom_button_proceed_to_custom_page()
-{
-    $button_name = esc_html__('Proceed to checkout', 'woocommerce'); // <== button Name
-    $button_link = get_permalink(4852); // <== Set here the page ID or use home_url() function
-    ?>
-    <a href="<?php echo $button_link; ?>" class="checkout-button button alt wc-forward">
-        <?php echo $button_name; ?>
-    </a>
-<?php
-}
-
 /**
  * Handle a custom 'customvar' query var to get orders with the 'customvar' meta.
  * @param array $query - Args for WP_Query.
@@ -398,4 +379,39 @@ function wm_customized_cart_item_remove_link( $button_link, $cart_item_key ){
         $button_link = '';
     }
     return $button_link;
+}
+
+function montepisanotree_tree_modality_types($order)
+{
+    $json = get_field("order_json", $order->ID);
+    $treesmodalityallowed = array(
+        'friendship',
+        'passion',
+        'love'
+    );
+    $tree_types = array();
+    if ($json) {
+        $jsonPhp = json_decode($json, true);
+        if (is_array($jsonPhp)) {
+            foreach ($jsonPhp as $type => $arr) {
+                if (in_array(strtolower($type), $treesmodalityallowed)) {
+                    array_push($tree_types, $type);
+                }
+            }
+        }
+    }
+    return $tree_types;
+}
+
+
+add_filter('woocommerce_email_subject_customer_completed_order', 'change_client_email_subject_order_complete', 1, 2);
+
+function change_client_email_subject_order_complete( $subject, $order ) {
+    $tree_types = montepisanotree_tree_modality_types($order);
+    if (count($tree_types) == 1 && $tree_types[0] == "friendship") {
+        $subject = "Adozione confermata";
+    }else {
+        $subject = "La tua targhetta è pronta!";
+    }
+	return $subject;
 }

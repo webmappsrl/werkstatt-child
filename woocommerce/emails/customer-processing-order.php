@@ -23,13 +23,17 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @hooked WC_Emails::email_header() Output the email header
  */
 do_action( 'woocommerce_email_header', $email_heading, $email ); ?>
-
-<?php /* translators: %s: Customer first name */ ?>
+<?php /* translators: %s: Customer first name */ 
+$tree_types = montepisanotree_tree_modality_types($order);
+?>
 <p><?php printf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ); ?></p>
 <?php /* translators: %s: Order number */ ?>
-<p>La tua adozione è andata a buon fine! Ti ringraziamo per aver supportato il progetto Montepisanotree. A breve riceverai una mail che attesta la tua adozione e le tempistiche necessarie perché tu possa ritirare la targhetta Non esitare a contattarci per chiarimenti / approfondimenti: siamo a disposizione.</p>
+<?php if (count($tree_types) == 1 && $tree_types[0] == "friendship") :?>
+<p>La tua adozione è andata a buon fine! Ti ringraziamo per aver supportato il progetto Montepisanotree. A breve riceverai una mail che conferma l'adozione del tuo albero. Non esitare a contattarci, siamo a disposizione per chiarimenti e approfondimenti.</p>
+<?php else: ?>
+<p>La tua adozione è andata a buon fine! Ti ringraziamo per aver supportato il progetto Montepisanotree. A breve riceverai una mail che conferma l'adozione del tuo albero con le indicazioni per ritirare la targhetta. Non esitare a contattarci, siamo a disposizione per chiarimenti e approfondimenti.</p>
+<?php endif; ?>
 <p>Il TEAM Montepisanotree</p>
-
 <?php
 
 /*
