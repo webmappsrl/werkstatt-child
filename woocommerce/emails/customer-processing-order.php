@@ -25,10 +25,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 do_action( 'woocommerce_email_header', $email_heading, $email ); ?>
 <?php /* translators: %s: Customer first name */ 
 $tree_types = montepisanotree_tree_modality_types($order);
+$renewal_type = montepisanotree_order_is_nenewal($order);
 ?>
 <p><?php printf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ); ?></p>
 <?php /* translators: %s: Order number */ ?>
-<?php if (count($tree_types) == 1 && $tree_types[0] == "friendship") :?>
+<?php if (count($tree_types) == 1 && $tree_types[0] == "friendship" || $renewal_type[0] == 'renewal_paid_date') :?>
 <p><?php esc_html_e( 'La tua adozione è andata a buon fine! Ti ringraziamo per aver supportato il progetto Montepisanotree. A breve riceverai una mail che conferma l\'adozione del tuo albero. Non esitare a contattarci, siamo a disposizione per chiarimenti e approfondimenti.', 'montepisanotree' ); ?></p>
 <?php else: ?>
 <p></p>

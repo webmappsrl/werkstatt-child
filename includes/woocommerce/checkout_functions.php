@@ -132,7 +132,7 @@ add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_
             {
                 montepisanotree_delete_token( $old_order_id );
             }
-            $jsonPhp['paid_date'] = date("Y-m-d",strtotime($orderPaidDateSession));
+            $jsonPhp['renewal_paid_date'] = date("Y-m-d",strtotime($orderPaidDateSession));
         } else {
             $jsonPhp['first_paid_date'] = date("Y-m-d");
         }
@@ -140,7 +140,7 @@ add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_
         WC()->session->set( 'oldOrderId', null );
         
         foreach ($jsonPhp as $type => $arr) {
-            if ($type == 'paid_date') {
+            if ($type == 'renewal_paid_date') {
                 $order_paid_date = $arr;
                 $next_order_paid_date = date("Y-m-d", strtotime("+1 years", strtotime($arr)));
                 update_field(MPT_ORDER_PAID_DATE, $next_order_paid_date, $order_id);

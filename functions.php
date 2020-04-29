@@ -426,6 +426,26 @@ function montepisanotree_tree_quantity_inorder($order)
     return $tree_quantity;
 }
 
+function montepisanotree_order_is_nenewal($order)
+{
+    $json = get_field("order_json", $order->ID);
+    $typeallowed = array(
+        'renewal_paid_date'
+    );
+    $renewal_type = array();
+    if ($json) {
+        $jsonPhp = json_decode($json, true);
+        if (is_array($jsonPhp)) {
+            foreach ($jsonPhp as $type => $arr) {
+                if (in_array(strtolower($type), $typeallowed)) {
+                        array_push($renewal_type, $type);
+                }
+            }
+        }
+    }
+    return $renewal_type;
+}
+
 
 add_filter('woocommerce_email_subject_customer_completed_order', 'change_client_email_subject_order_complete', 1, 2);
 

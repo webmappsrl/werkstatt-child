@@ -27,6 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php /* translators: %s: Customer first name */ 
 $tree_types = montepisanotree_tree_modality_types($order);
 $tree_quantity = montepisanotree_tree_quantity_inorder($order);
+$renewal_type = montepisanotree_order_is_nenewal($order);
 $single_tree_order = __( 'la targhetta è pronta per essere ritirata e collocata sul tuo albero. Puoi ritirarla', 'montepisanotree' );
 $multi_tree_order = __( 'le targhette sono pronte per essere ritirate e collocate sui tuoi alberi. Puoi ritirarle', 'montepisanotree' );
 if (count($tree_quantity) > 1 ){
@@ -37,7 +38,7 @@ if (count($tree_quantity) > 1 ){
 ?>
 
 <?php /* translators: %s: Site title */ ?>
-<?php if (count($tree_types) == 1 && $tree_types[0] == "friendship") :
+<?php if (count($tree_types) == 1 && $tree_types[0] == "friendship" || $renewal_type[0] == 'renewal_paid_date') :
 	do_action( 'woocommerce_email_header', "Certificato di adozione", $email );
 ?>
 <p><?php printf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ); ?></p>
