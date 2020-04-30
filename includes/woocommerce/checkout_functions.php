@@ -131,6 +131,7 @@ add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_
             if ( $old_order_id )
             {
                 montepisanotree_delete_token( $old_order_id );
+                montepisanotree_add_already_renewed_to_oldorder($old_order_id);
             }
             $jsonPhp['renewal_paid_date'] = date("Y-m-d",strtotime($orderPaidDateSession));
         } else {

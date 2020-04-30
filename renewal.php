@@ -31,14 +31,14 @@
         WC()->session->set('oldOrderId', $order_id );
     }
     foreach ($current_json as $modality => $items) {
-        if (is_array($items)) :
-        foreach ( $items as $item) {
-            $product = get_page_by_title( $modality, OBJECT, 'product' );
-            $_POST['idpoi'] = $item->id;
-            $_POST['dedpoi'] = $item->dedication;
-            WC()->cart->add_to_cart( $product->ID );
+        if (is_array($items)) {
+            foreach ( $items as $item) {
+                $product = get_page_by_title( $modality, OBJECT, 'product' );
+                $_POST['idpoi'] = $item->id;
+                $_POST['dedpoi'] = $item->dedication;
+                WC()->cart->add_to_cart( $product->ID );
+            }
         }
-        endif;
     }
         
     wp_safe_redirect( wc_get_checkout_url() );

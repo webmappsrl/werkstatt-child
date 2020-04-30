@@ -381,6 +381,7 @@ function wm_customized_cart_item_remove_link( $button_link, $cart_item_key ){
     return $button_link;
 }
 
+// gives an array of order's type of modality. takes the order object.
 function montepisanotree_tree_modality_types($order)
 {
     $json = get_field("order_json", $order->ID);
@@ -403,6 +404,7 @@ function montepisanotree_tree_modality_types($order)
     return $tree_types;
 }
 
+// gives an array of ids of trees in the order only if their modality is love or passion. takes the order object.
 function montepisanotree_tree_quantity_inorder($order)
 {
     $json = get_field("order_json", $order->ID);
@@ -426,11 +428,12 @@ function montepisanotree_tree_quantity_inorder($order)
     return $tree_quantity;
 }
 
-function montepisanotree_order_is_nenewal($order)
+// checks the order_json to see if its already renewed 
+function montepisanotree_order_is_already_renewed($order)
 {
     $json = get_field("order_json", $order->ID);
     $typeallowed = array(
-        'renewal_paid_date'
+        'already_renewed',
     );
     $renewal_type = array();
     if ($json) {
@@ -447,8 +450,44 @@ function montepisanotree_order_is_nenewal($order)
 }
 
 
-add_filter('woocommerce_email_subject_customer_completed_order', 'change_client_email_subject_order_complete', 1, 2);
+// checks the order_json to see if its has renewal paid date to personilize emails 
+function montepisanotree_order_is_nenewal($order)
+{
+    $json = get_field("order_json", $order->ID);
+    $typeallowed = array(
+        'renewal_paid_date',
+    );
+    $renewal_type = array();
+    if ($json) {
+        $jsonPhp = json_decode($json, true);
+        if (is_array($jsonPhp)) {
+            foreach ($jsonPhp as $type => $arr) {
+                if (in_array(strtolower($type), $typeallowed)) {
+                        array_push($renewal_type, $type);
+                }
+            }
+        }
+    }
+    return $renewal_type;
+}
 
+// adds the already renewed parameter to an order_json og a give order_id
+function montepisanotree_add_already_renewed_to_oldorder($order_id)
+{
+    $json = get_field("order_json", $order_id);
+    if ($json) {
+        $jsonPhp = json_decode($json, true);
+        if (is_array($jsonPhp)) {
+            $jsonPhp['already_renewed'] = date("Y-m-d");
+            $json = json_encode($jsonPhp);
+            update_field('order_json', $json, $order_id);
+        }
+    }
+}
+
+
+// changes the subject of WC mail completed if the order has only friendship modality tree
+add_filter('woocommerce_email_subject_customer_completed_order', 'change_client_email_subject_order_complete', 1, 2);
 function change_client_email_subject_order_complete( $subject, $order ) {
     $tree_types = montepisanotree_tree_modality_types($order);
     if (count($tree_types) == 1 && $tree_types[0] == "friendship") {
@@ -465,7 +504,6 @@ add_filter( 'woocommerce_email_actions', 'add_another_email_action' );
     $array[]='woocommerce_order_status_processing_to_on-hold';
     return $array;
 }
-
 add_action( 'woocommerce_email', 'hook_another_email_on_hold' );
     function hook_another_email_on_hold( $email_class ) {
     add_action( 'woocommerce_order_status_processing_to_on-hold_notification', array( $email_class->emails['WC_Email_Customer_On_Hold_Order'], 'trigger' ) );
