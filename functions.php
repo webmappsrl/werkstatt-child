@@ -434,6 +434,7 @@ function montepisanotree_order_is_already_renewed($order)
     $json = get_field("order_json", $order->ID);
     $typeallowed = array(
         'already_renewed',
+        'already_expired'
     );
     $renewal_type = array();
     if ($json) {
@@ -479,6 +480,21 @@ function montepisanotree_add_already_renewed_to_oldorder($order_id)
         $jsonPhp = json_decode($json, true);
         if (is_array($jsonPhp)) {
             $jsonPhp['already_renewed'] = date("Y-m-d");
+            $json = json_encode($jsonPhp);
+            update_field('order_json', $json, $order_id);
+        }
+    }
+}
+
+
+// adds the already expired parameter to an order_json og a give order_id
+function montepisanotree_add_already_expired_to_oldorder($order_id)
+{
+    $json = get_field("order_json", $order_id);
+    if ($json) {
+        $jsonPhp = json_decode($json, true);
+        if (is_array($jsonPhp)) {
+            $jsonPhp['already_expired'] = date("Y-m-d");
             $json = json_encode($jsonPhp);
             update_field('order_json', $json, $order_id);
         }
