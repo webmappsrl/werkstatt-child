@@ -452,7 +452,7 @@ function montepisanotree_order_is_already_renewed($order)
 
 
 // checks the order_json to see if its has renewal paid date to personilize emails 
-function montepisanotree_order_is_nenewal($order)
+function montepisanotree_order_is_renewal($order)
 {
     $json = get_field("order_json", $order->ID);
     $typeallowed = array(
@@ -506,7 +506,8 @@ function montepisanotree_add_already_expired_to_oldorder($order_id)
 add_filter('woocommerce_email_subject_customer_completed_order', 'change_client_email_subject_order_complete', 1, 2);
 function change_client_email_subject_order_complete( $subject, $order ) {
     $tree_types = montepisanotree_tree_modality_types($order);
-    if (count($tree_types) == 1 && $tree_types[0] == "friendship") {
+    $renewal_type = montepisanotree_order_is_renewal($order);
+    if (count($tree_types) == 1 && $tree_types[0] == "friendship" || $renewal_type[0] == 'renewal_paid_date') {
         $subject = "Adozione confermata";
     }else {
         $subject = "La tua targhetta è pronta!";

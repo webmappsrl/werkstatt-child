@@ -25,7 +25,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 do_action( 'woocommerce_email_header', $email_heading, $email ); ?>
 <?php /* translators: %s: Customer first name */ 
 $tree_types = montepisanotree_tree_modality_types($order);
-$renewal_type = montepisanotree_order_is_nenewal($order);
+$renewal_type = montepisanotree_order_is_renewal($order);
 ?>
 <p><?php printf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ); ?></p>
 <?php /* translators: %s: Order number */ ?>

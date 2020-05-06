@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 <?php /* translators: %s: Customer first name */ 
 $tree_types = montepisanotree_tree_modality_types($order);
 $tree_quantity = montepisanotree_tree_quantity_inorder($order);
-$renewal_type = montepisanotree_order_is_nenewal($order);
+$renewal_type = montepisanotree_order_is_renewal($order);
 $single_tree_order = __( 'la targhetta è pronta per essere ritirata e collocata sul tuo albero. Puoi ritirarla', 'montepisanotree' );
 $multi_tree_order = __( 'le targhette sono pronte per essere ritirate e collocate sui tuoi alberi. Puoi ritirarle', 'montepisanotree' );
 if (count($tree_quantity) > 1 ){
