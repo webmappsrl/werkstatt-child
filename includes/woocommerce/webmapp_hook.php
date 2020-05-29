@@ -5,7 +5,7 @@ function webmapp_server_hook_send_request($parameters,$hook='mptupdate')
 {
     $requestJson = array(
         'instance' => home_url(),
-        'hook' => $hook,
+        'task' => $hook,
         'parameters' => $parameters
     );
 
