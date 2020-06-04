@@ -177,8 +177,8 @@ add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_
             endif;
         }
         
-
-        $json = json_encode($jsonPhp);
+        
+        $json = json_encode($jsonPhp, JSON_UNESCAPED_UNICODE);
         update_field(MPT_ORDER_JSON_KEY, $json, $order_id);
 
         
