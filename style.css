@@ -109,3 +109,12 @@ You can start adding your own styles here. Use !important to overwrite styles if
 .woocommerce .wc-item-meta {
     display: none;
 }
+ul.woocommerce-error {
+    list-style: none;
+    color: white;
+    background: #dd3333;
+    padding: 20px;
+}
+ul.woocommerce-error a {
+    color: #d2cf40;
+}

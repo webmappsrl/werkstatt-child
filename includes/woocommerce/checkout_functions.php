@@ -114,6 +114,48 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
     return $fields;
 });
 
+
+add_action( 'woocommerce_check_cart_items', function () {
+
+    // Only on checkout page 
+    if ( !is_checkout() ) 
+        return;
+
+    // Check if the items are from a renewal
+    $orderPaidDateSession = WC()->session->get('orderPaidDateSession');
+    if( $orderPaidDateSession ) 
+        return;
+
+    // Check cart items if they are already purchased
+    $cart = WC()->cart->get_cart();
+    $poi_name_error = array();
+    foreach ( $cart as $key => $val){
+        $poi_id = $val['idpoi'];
+        $product_id = $val['product_id'];
+        $name = $val['data']->get_name();
+        if (isset($poi_id)) {
+            $poi_paid_date = get_field(MPT_POI_PAID_DATE,$poi_id);
+            if (isset($poi_paid_date) && !empty($poi_paid_date)) {
+                $poi_name_error[] = get_the_title( $poi_id);
+                WC()->cart->remove_cart_item( $key );
+            }
+        }
+    }
+    if ($poi_name_error && count($poi_name_error) == 1) {
+        wc_add_notice( sprintf( 
+            __("Albero %s è stato già acquistato, per favore <a href='".home_url('/mappa')."' >scegliere un altro albero</a>", "woocommerce" ),  
+            '"' . implode(", ",$poi_name_error) . '"'
+        ), 'error' );
+    } elseif ($poi_name_error && count($poi_name_error) > 1) {
+        wc_add_notice( sprintf( 
+            __("Alberi %s sono stati già acquistati, per favore <a href='".home_url('/mappa')."' >scegliere altri alberi</a>", "woocommerce" ),  
+            '"' . implode(", ",$poi_name_error) . '"'
+        ), 'error' );
+    }
+
+}, 10, 0);
+
+
 add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_data, $order) {
     
     $dedicationProducts = montepisanotree_dedication_product_types();
