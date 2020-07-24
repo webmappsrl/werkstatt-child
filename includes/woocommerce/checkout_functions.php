@@ -200,8 +200,10 @@ add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_
                         if ($order_paid_date) {
                             $next_order_paid_date = date("Y-m-d", strtotime($next_order_paid_date));
                             update_field( MPT_POI_PAID_DATE , $next_order_paid_date , $data['id'] );
+                            update_field( 'color' , '#dd3333' , $data['id'] );
                         } else {
                             update_field( MPT_POI_PAID_DATE , $current_date , $data['id'] );
+                            update_field( 'color' , '#dd3333' , $data['id'] );
                         }
                     }
                 endforeach;
