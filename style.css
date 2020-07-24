@@ -118,3 +118,7 @@ ul.woocommerce-error {
 ul.woocommerce-error a {
     color: #d2cf40;
 }
+
+.woocommerce-checkout .woocommerce-shipping-fields,.woocommerce-checkout .woocommerce-additional-fields {
+    display: none;
+}
