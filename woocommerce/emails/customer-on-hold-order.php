@@ -35,7 +35,7 @@ $contact_us = '<a href="'.home_url().'/info-contatti/">Clicca qui per maggiori i
 
 <?php /* translators: %s: Customer first name */ ?>
 <p><?php printf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ); ?></p>
-<p><?php printf(esc_html__( 'Ti comunichiamo che %s per essere ritirata presso il nostro store in Largo P. B.Shelley, 20, 56017 San Giuliano Terme PI dal: %s. %s', 'montepisanotree' ),$targhet_number, $delivery_date, $contact_us); ?></p>
+<p><?php printf(esc_html__( 'Ti comunichiamo che %s per essere ritirata presso il nostro store in Largo P. B.Shelley, 20, 56017 San Giuliano Terme PI indicativamente dal: %s. Riceverai un’email di conferma appena potrai venire a ritirarla. %s', 'montepisanotree' ),$targhet_number, $delivery_date, $contact_us); ?></p>
 <p><?php esc_html_e( 'Il TEAM Montepisanotree', 'montepisanotree' );?></p>
 <?php
 
