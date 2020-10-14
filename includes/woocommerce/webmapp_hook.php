@@ -62,9 +62,15 @@ add_filter( 'acf/update_value/name='.MPT_POI_PAID_DATE, function($value, $post_i
     
     $post = get_post( $post_id );
 
-    if ( $post->post_type == 'poi' ) 
+    if ( $post->post_type == 'poi' ) {
         webmapp_server_hook_send_request( [ 'id' => $post_id ] , 'mptupdatepoi' );
-        update_poi_job_hoqu( $post_id, $post, true );
+
+        $hoqu_token = get_option("webmapp_hoqu_token");
+        $hoqu_baseurl = get_option("webmapp_hoqu_baseurl");
+        if ($hoqu_token && $hoqu_baseurl) {
+            update_poi_job_hoqu( $post_id, $post, true );
+        }
+    }
 
     return $value;
 }, 10 , 3 );
@@ -81,47 +87,3 @@ add_action( "acf/delete_value", function( $post_id, $field_name, $field ){
         webmapp_server_hook_send_request( [ 'id' => $post_id ] , 'mptupdatepoi');
 
 } , 10 , 3 );
-
-
-
-function update_poi_job_hoqu( $post_id, $post, $update ){
-
-    $home_url = home_url();
-    $hoqu_token = get_option("webmapp_hoqu_token");
-
-    $requestJson = array(
-        'instance' => $home_url,
-        'job' => 'mptupdate',
-        'parameters' => array(
-            'id' => $post_id
-        )
-    );
-
-    $response = wp_remote_post(
-        'https://hoqustaging.webmapp.it/api/store',
-        array(
-            'method'      => 'POST',
-            'timeout'     => 45,
-            'redirection' => 5,
-            'httpversion' => '1.0',
-            'blocking'    => true,
-            'headers'     => array(
-                'Content-Type' => 'application/json; charset=utf-8',
-                'Accept' => 'application/json',
-                'Authorization' => "Bearer $hoqu_token"
-            ),
-            'body'        => json_encode($requestJson),
-            'cookies'     => array()
-        )
-    );
-
-    // error_log(print_r($requestJson), print_r($response));
-
-    if (is_wp_error($response)) {
-        $error_message = $response->get_error_message();
-        error_log("Something went wrong: $error_message");
-    }
-
-    
-}
-add_action( "save_post_poi", "update_poi_job_hoqu", 10, 3);
