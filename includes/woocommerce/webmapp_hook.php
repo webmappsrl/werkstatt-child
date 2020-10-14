@@ -106,8 +106,8 @@ function update_poi_job_hoqu( $post_id, $post, $update ){
             'blocking'    => true,
             'headers'     => array(
                 'Content-Type' => 'application/json; charset=utf-8',
-                'Accept => application/json',
-                'Authorization => Bearer $hoqu_token'
+                'Accept' => 'application/json',
+                'Authorization' => "Bearer $hoqu_token"
             ),
             'body'        => json_encode($requestJson),
             'cookies'     => array()
