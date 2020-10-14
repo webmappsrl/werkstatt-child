@@ -85,41 +85,42 @@ add_action( "acf/delete_value", function( $post_id, $field_name, $field ){
 
 function update_poi_job_hoqu( $post_id, $post, $update ){
 
-    $site_url = site_url();
+    $home_url = home_url();
     $hoqu_token = get_option("webmapp_hoqu_token");
-    if ($hoqu_token) {
 
-        $CURLOPT_POSTFIELDS_ARRAY = "{
-            \"instance\": \"$site_url\",
-            \"job\": \"mptupdate\",
-            \"parameters\": {
-                \"id\": \"$post_id\",
-            }
-          }";
-        
-          $curl = curl_init();
-        
-          curl_setopt_array($curl, array(
-            CURLOPT_URL => "https://hoqustaging.webmapp.it/api/store",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => "",
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => "POST",
-            CURLOPT_POSTFIELDS => $CURLOPT_POSTFIELDS_ARRAY,
-            CURLOPT_HTTPHEADER => array(
-              "Accept: application/json",
-              "Content-type: application/json",
-              "Authorization : Bearer $hoqu_token"
+    $requestJson = array(
+        'instance' => $home_url,
+        'job' => 'mptupdate',
+        'parameters' => array(
+            'id' => $post_id
+        )
+    );
+
+    $response = wp_remote_post(
+        'https://hoqustaging.webmapp.it/api/store',
+        array(
+            'method'      => 'POST',
+            'timeout'     => 45,
+            'redirection' => 5,
+            'httpversion' => '1.0',
+            'blocking'    => true,
+            'headers'     => array(
+                'Content-Type' => 'application/json; charset=utf-8',
+                'Accept => application/json',
+                'Authorization => Bearer $hoqu_token'
             ),
-          ));
-        
-          $response = curl_exec($curl);
-          $err = curl_error($curl);
-        
-          curl_close($curl);
+            'body'        => json_encode($requestJson),
+            'cookies'     => array()
+        )
+    );
+
+    // error_log(print_r($requestJson), print_r($response));
+
+    if (is_wp_error($response)) {
+        $error_message = $response->get_error_message();
+        error_log("Something went wrong: $error_message");
     }
+
     
 }
 add_action( "save_post_poi", "update_poi_job_hoqu", 10, 3);
