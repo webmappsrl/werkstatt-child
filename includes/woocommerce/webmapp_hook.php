@@ -62,15 +62,8 @@ add_filter( 'acf/update_value/name='.MPT_POI_PAID_DATE, function($value, $post_i
     
     $post = get_post( $post_id );
 
-    if ( $post->post_type == 'poi' ) {
+    if ( $post->post_type == 'poi' ) 
         webmapp_server_hook_send_request( [ 'id' => $post_id ] , 'mptupdatepoi' );
-
-        $hoqu_token = get_option("webmapp_hoqu_token");
-        $hoqu_baseurl = get_option("webmapp_hoqu_baseurl");
-        if ($hoqu_token && $hoqu_baseurl) {
-            update_poi_job_hoqu( $post_id, $post, true );
-        }
-    }
 
     return $value;
 }, 10 , 3 );
