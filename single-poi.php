@@ -1,6 +1,8 @@
 <?php get_header(); 
 
 $post_id = get_the_ID();
+$home_url = home_url();
+$home_url = preg_replace('#^https?://#', '', $home_url);
 
 ?>
 <div class="page-padding extra">
@@ -100,7 +102,7 @@ do_action( 'woocommerce_before_single_product' );
 			</div>
 			<div class="poi-cell poi-visual poi-map small-12 large-6 columns">
 				<?php
-					echo do_shortcode ("[webmapp_geojson_map geojson_url='https://a.webmapp.it/montepisanotree.org/geojson/$post_id.geojson' height='420']");
+					echo do_shortcode ("[webmapp_geojson_map geojson_url='https://a.webmapp.it/$home_url/geojson/$post_id.geojson' height='420']");
 				?>
 			</div>
 			<div class="poi-cell poi-info summary entry-summary small-12 large-6 columns">
