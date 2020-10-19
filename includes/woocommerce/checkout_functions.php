@@ -237,7 +237,7 @@ add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_
 
 
 function update_field_and_hoqu($post_id) {
-    update_field( 'color' , '#dd3333' , $data['id'] );
+    update_field( 'color' , '#dd3333' , $post_id );
     $post = get_post( $post_id );
     update_poi_job_hoqu( $post_id, $post, true );
 }
