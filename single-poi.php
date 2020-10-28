@@ -64,7 +64,9 @@ do_action( 'woocommerce_before_single_product' );
                     }
                     // $myArray = get_field( "n7webmap_track_media_gallery" );
                     foreach($myArray as $foto) {
-                        if (isset($foto)) {
+                        if (isset($foto['id'])) {
+                            $fotoGalleryId[] = $foto['id'];
+                        } else {
                             $fotoGalleryId[] = $foto;
                         }
                         // $fotoGalleryurl[] = $foto['url'];
