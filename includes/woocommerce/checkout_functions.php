@@ -212,7 +212,7 @@ add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_
                         if (isset($data['id'])) {
                             if (isset($posted_data[$data['id']]))
                             {
-                                $jsonPhp[$type][$k]['dedication'] = $posted_data[$data['id']];
+                                $jsonPhp[$type][$k]['dedication'] = sanitize_text_field($posted_data[$data['id']]);
                             }
                             
                         }
