@@ -157,7 +157,10 @@ add_action( 'woocommerce_check_cart_items', function () {
 
 
 add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_data, $order) {
-    
+    $order_status  = $order->get_status();
+    if ($order_status == 'failed')
+        return;
+
     $dedicationProducts = montepisanotree_dedication_product_types();
     $current_date = date('Y-m-d');
     $order_paid_date = '';
