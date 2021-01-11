@@ -156,88 +156,94 @@ add_action( 'woocommerce_check_cart_items', function () {
 }, 10, 0);
 
 
-add_action('woocommerce_checkout_order_processed', function ($order_id, $posted_data, $order) {
-    $order_status  = $order->get_status();
-    if ($order_status == 'failed')
-        return;
+function mpt_order_processing_function($order_id) {
 
-    $dedicationProducts = montepisanotree_dedication_product_types();
-    $current_date = date('Y-m-d');
-    $order_paid_date = '';
-    $order = wc_get_order( $order_id );
-    $order_items  = $order->get_items();
-    $array_id = array();
-    $json = WC()->session->get(MPT_SESSION_JSON_KEY);
-    if ($json) {
-        $jsonPhp = json_decode($json, true);
-        $orderPaidDateSession = WC()->session->get('orderPaidDateSession');
-        if ($orderPaidDateSession) {
-            $old_order_id = WC()->session->get('oldOrderId');
-            if ( $old_order_id )
-            {
-                montepisanotree_delete_token( $old_order_id );
-                montepisanotree_add_already_renewed_to_oldorder($old_order_id);
-            }
-            $jsonPhp['renewal_paid_date'] = date("Y-m-d",strtotime($orderPaidDateSession));
-        } else {
-            $jsonPhp['first_paid_date'] = date("Y-m-d");
-        }
-        WC()->session->set( 'orderPaidDateSession', null );
-        WC()->session->set( 'oldOrderId', null );
+    $bool = is_checkout();
+    if ($bool) {
+        $order = wc_get_order( $order_id );
+        $posted_data = WC()->checkout->get_posted_data();
+    
+        $dedicationProducts = montepisanotree_dedication_product_types();
+        $current_date = date('Y-m-d');
+        $order_paid_date = '';
         
-        foreach ($jsonPhp as $type => $arr) {
-            if ($type == 'renewal_paid_date') {
-                $order_paid_date = $arr;
-                $next_order_paid_date = date("Y-m-d", strtotime("+1 years", strtotime($arr)));
-                update_field(MPT_ORDER_PAID_DATE, $next_order_paid_date, $order_id);
-            } elseif ($type == 'first_paid_date') {
-                $first_order_paid_date = date("Y-m-d", strtotime($arr));
-                update_field(MPT_ORDER_PAID_DATE, $first_order_paid_date, $order_id);
+        $order_items  = $order->get_items();
+        $array_id = array();
+        $json = WC()->session->get(MPT_SESSION_JSON_KEY);
+        if ($json) {
+            $jsonPhp = json_decode($json, true);
+            $orderPaidDateSession = WC()->session->get('orderPaidDateSession');
+            if ($orderPaidDateSession) {
+                $old_order_id = WC()->session->get('oldOrderId');
+                if ( $old_order_id )
+                {
+                    montepisanotree_delete_token( $old_order_id );
+                    montepisanotree_add_already_renewed_to_oldorder($old_order_id);
+                }
+                $jsonPhp['renewal_paid_date'] = date("Y-m-d",strtotime($orderPaidDateSession));
+            } else {
+                $jsonPhp['first_paid_date'] = date("Y-m-d");
             }
-        }
-        foreach ($jsonPhp as $type => $arr) {
-            if (is_array($arr)) :
-                foreach ($arr as $k => $data) :
-                    if (isset($data['id'])) {
-                        $array_id[] = $data['id'];
-                        if ($order_paid_date) {
-                            $next_order_paid_date = date("Y-m-d", strtotime($next_order_paid_date));
-                            update_field( MPT_POI_PAID_DATE , $next_order_paid_date , $data['id'] );
-                            update_field_and_hoqu($data['id']);
-                        } else {
-                            update_field( MPT_POI_PAID_DATE , $current_date , $data['id'] );
-                            update_field_and_hoqu($data['id']);
-                        }
-                    }
-                endforeach;
-                if (in_array(strtolower($type), $dedicationProducts)) :
+            WC()->session->set( 'orderPaidDateSession', null );
+            WC()->session->set( 'oldOrderId', null );
+            
+            foreach ($jsonPhp as $type => $arr) {
+                if ($type == 'renewal_paid_date') {
+                    $order_paid_date = $arr;
+                    $next_order_paid_date = date("Y-m-d", strtotime("+1 years", strtotime($arr)));
+                    update_field(MPT_ORDER_PAID_DATE, $next_order_paid_date, $order_id);
+                } elseif ($type == 'first_paid_date') {
+                    $first_order_paid_date = date("Y-m-d", strtotime($arr));
+                    update_field(MPT_ORDER_PAID_DATE, $first_order_paid_date, $order_id);
+                }
+            }
+            foreach ($jsonPhp as $type => $arr) {
+                if (is_array($arr)) :
                     foreach ($arr as $k => $data) :
                         if (isset($data['id'])) {
-                            if (isset($posted_data[$data['id']]))
-                            {
-                                $jsonPhp[$type][$k]['dedication'] = sanitize_text_field($posted_data[$data['id']]);
+                            $array_id[] = $data['id'];
+                            if ($order_paid_date) {
+                                $next_order_paid_date = date("Y-m-d", strtotime($next_order_paid_date));
+                                update_field( MPT_POI_PAID_DATE , $next_order_paid_date , $data['id'] );
+                                update_field_and_hoqu($data['id']);
+                            } else {
+                                update_field( MPT_POI_PAID_DATE , $current_date , $data['id'] );
+                                update_field_and_hoqu($data['id']);
                             }
-                            
                         }
                     endforeach;
+                    if (in_array(strtolower($type), $dedicationProducts)) :
+                        foreach ($arr as $k => $data) :
+                            if (isset($data['id'])) {
+                                if (isset($posted_data[$data['id']]))
+                                {
+                                    $jsonPhp[$type][$k]['dedication'] = sanitize_text_field($posted_data[$data['id']]);
+                                }
+                                
+                            }
+                        endforeach;
+                    endif;
                 endif;
-            endif;
+            }
+            
+            
+            $json = json_encode($jsonPhp, JSON_UNESCAPED_UNICODE);
+            update_field(MPT_ORDER_JSON_KEY, $json, $order_id);
+    
+            
         }
-        
-        
-        $json = json_encode($jsonPhp, JSON_UNESCAPED_UNICODE);
-        update_field(MPT_ORDER_JSON_KEY, $json, $order_id);
-
-        
+        $count = 0;
+        foreach ( $order_items as $item_id => $item ) {
+            // Added the function to save poi_id to item meta data
+            wc_add_order_item_meta($item_id, 'idpoi', $array_id[$count]);
+            $count ++;
+        }
+    } else {
+        return;
     }
-    $count = 0;
-    foreach ( $order_items as $item_id => $item ) {
-        // Added the function to save poi_id to item meta data
-        wc_add_order_item_meta($item_id, 'idpoi', $array_id[$count]);
-        $count ++;
-    }
-}, 10, 3);
-
+}
+add_action('woocommerce_order_status_processing', 'mpt_order_processing_function', 20, 1);
+add_action('woocommerce_order_status_on-hold', 'mpt_order_processing_function', 20, 1);
 
 function update_field_and_hoqu($post_id) {
     update_field( 'color' , '#dd3333' , $post_id );
