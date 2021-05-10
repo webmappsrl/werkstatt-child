@@ -333,6 +333,7 @@ function add_privacy_checkbox()
         'label' => 'Dichiaro di aver letto e accettato la <a href="https://montepisanotree.org/privacy-policy">Privacy Policy</a>',
     ));
 }
+
 add_action('woocommerce_checkout_process', 'privacy_checkbox_error_message');
 function privacy_checkbox_error_message()
 {
