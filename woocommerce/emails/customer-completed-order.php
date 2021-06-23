@@ -38,12 +38,12 @@ if (count($tree_quantity) > 1 ){
 ?>
 
 <?php /* translators: %s: Site title */ ?>
-<?php if (!in_array("love", $tree_types) && !in_array("passion", $tree_types) || $renewal_type[0] == 'renewal_paid_date') :
+<?php if (in_array("love", $tree_types) == false && in_array("passion", $tree_types) == false || $renewal_type[0] == 'renewal_paid_date') :
 	do_action( 'woocommerce_email_header', "Certificato di adozione", $email );
 ?>
 <p><?php printf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ); ?></p>
 <p><?php esc_html_e( 'Ti confermiamo che l’adozione è stata confermata. Qua sotto trovi un breve riepilogo. Grazie ancora per aver supportato il progetto MontepisanoTree.', 'montepisanotree' ); ?></p>
-<?php elseif (!in_array("love", $tree_types) && !in_array("friendship", $tree_types)): 
+<?php elseif (in_array("love", $tree_types) == false && in_array("friendship", $tree_types) == false): 
 	do_action( 'woocommerce_email_header', "Certificato di adozione", $email );
 ?>
 <p><?php printf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ); ?></p>
