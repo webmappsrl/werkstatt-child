@@ -397,7 +397,7 @@ function montepisanotree_tree_modality_types($order)
         if (is_array($jsonPhp)) {
             foreach ($jsonPhp as $type => $arr) {
                 if (in_array(strtolower($type), $treesmodalityallowed)) {
-                    array_push($tree_types, $type);
+                    array_push($tree_types, strtolower($type));
                 }
             }
         }
