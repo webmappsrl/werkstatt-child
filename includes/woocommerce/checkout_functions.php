@@ -73,7 +73,7 @@ add_filter('woocommerce_checkout_fields', function ($fields) {
                                 'class'       => array('notes'),
                                 'required'    => false,
                                 'maxlength'    => 50,
-                                'placeholder' => esc_attr__('Inserisci qui il nome che vuoi mettere sulla targhetta (Es. \'Luca e Martina\',\'Vittorio\' o \'Famiglia Rossi\'...). Lasciando questo campo vuoto, sulla targhetta verrà stampato il nome inserito nei dettagli di fatturazione.	', 'wm-child-mpt'),
+                                'placeholder' => esc_attr__('Inserisci qui il nome che vuoi mettere sulla targhetta (Es. \'Luca e Martina\',\'Vittorio\' o \'Famiglia Rossi\'...). Lasciando questo campo vuoto, sulla targhetta verrà stampato il nome inserito nei dettagli di fatturazione.(Lunghezza massima 50 caratteri)', 'wm-child-mpt'),
                                 'default'     => $data['dedication'] ? $data['dedication'] : '',
                                 'custom_attributes' => $data['dedication'] ? [ 'readonly' => 'readonly' ] : []
                             );
