@@ -508,7 +508,7 @@ add_filter('woocommerce_email_subject_customer_completed_order', 'change_client_
 function change_client_email_subject_order_complete( $subject, $order ) {
     $tree_types = montepisanotree_tree_modality_types($order);
     $renewal_type = montepisanotree_order_is_renewal($order);
-    if (count($tree_types) == 1 && $tree_types[0] == "friendship" || $renewal_type[0] == 'renewal_paid_date') {
+    if (in_array("love", $tree_types) == false || $renewal_type[0] == 'renewal_paid_date') {
         $subject = "Adozione confermata";
     }else {
         $subject = "La tua targhetta è pronta!";

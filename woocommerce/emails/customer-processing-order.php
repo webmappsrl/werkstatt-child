@@ -31,10 +31,6 @@ $renewal_type = montepisanotree_order_is_renewal($order);
 <?php /* translators: %s: Order number */ ?>
 <?php if (in_array("love", $tree_types) == false && in_array("passion", $tree_types) == false || $renewal_type[0] == 'renewal_paid_date') :?>
 <p><?php esc_html_e( 'La tua adozione è andata a buon fine! Ti ringraziamo per aver partecipato al progetto Montepisanotree. A breve riceverai una mail che conferma l\'adozione del tuo albero. Non esitare a contattarci, siamo a disposizione per chiarimenti e approfondimenti.', 'montepisanotree' ); ?></p>
-<p><?php echo in_array("love", $tree_types) ?></p>
-<p><?php echo in_array("passion", $tree_types) ?></p>
-<p><?php echo in_array("friendship", $tree_types) ?></p>
-<p><?php print_r($tree_types) ?></p>
 <?php elseif (in_array("love", $tree_types) == false && in_array("friendship", $tree_types) == false): ?>
 <p><?php echo __( 'La tua adozione è andata a buon fine! Ti ringraziamo per aver partecipato al progetto Montepisanotree. A breve il tuo nome comparirà nella <a href="https://montepisanotree.org/grazie/">pagina dei ringraziamenti</a> sul sito www.montepisanotree.org; riceverai una mail che conferma l\'adozione del tuo albero e ti ricordiamo che installazione della targhetta e la gestione dell\'albero è a cura del progetto. Non esitare a contattarci, siamo a disposizione per chiarimenti e approfondimenti.', 'montepisanotree' ); ?></p>
 <?php else: ?>
