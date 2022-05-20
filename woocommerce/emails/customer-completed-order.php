@@ -52,7 +52,7 @@ if (count($tree_quantity) > 1 ){
 	do_action( 'woocommerce_email_header', "Ritira la tua targhetta", $email );
 ?>
 <p><?php printf( esc_html__( 'Hi %s,', 'woocommerce' ), esc_html( $order->get_billing_first_name() ) ); ?></p>
-<p><?php printf(esc_html__( 'Ti informiamo che %s tutti i giorni dal lunedì al venerdì dalle ore 90:00 alle 18:00 ed il sabato dalle 90:00 alle 13:00 presso il nostro Store in Largo P. B.Shelley, 20, 56017 San Giuliano Terme PI. Grazie ancora', 'montepisanotree' ),$targhet_number); ?></p>
+<p><?php printf(esc_html__( 'Ti informiamo che %s tutti i giorni dal lunedì al venerdì dalle ore 10:00 alle 19:00 ed il sabato dalle 09:00 alle 13:00 presso il nostro Store in Largo P. B.Shelley, 20, 56017 San Giuliano Terme PI. Grazie ancora', 'montepisanotree' ),$targhet_number); ?></p>
 <?php endif; ?>
 <p><?php esc_html_e( 'Il TEAM Montepisanotree', 'montepisanotree' ); ?></p>
 <?php

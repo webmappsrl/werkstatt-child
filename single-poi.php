@@ -37,7 +37,7 @@ do_action( 'woocommerce_before_single_product' );
                     }
                 echo '</div>';
             
-                mostraPulsanteAdotta();
+                mostraPulsanteAdotta($post_id);
                 
                 // shows the coordination of the tree latitude and longitude
                 $coords = get_field ('n7webmap_coord');

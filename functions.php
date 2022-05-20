@@ -82,7 +82,7 @@ add_filter('woocommerce_is_sold_individually', 'wc_remove_all_quantity_fields', 
 //     }
 // }
 
-function mostraPulsanteAdotta()
+function mostraPulsanteAdotta($post_id)
 {
     $paid_date = get_field('paid_date', $post_id);
     if (isset($paid_date) &&  $paid_date) {
@@ -525,4 +525,26 @@ add_filter( 'woocommerce_email_actions', 'add_another_email_action' );
 add_action( 'woocommerce_email', 'hook_another_email_on_hold' );
     function hook_another_email_on_hold( $email_class ) {
     add_action( 'woocommerce_order_status_processing_to_on-hold_notification', array( $email_class->emails['WC_Email_Customer_On_Hold_Order'], 'trigger' ) );
+}
+
+// wm_write_log_file($err_contact_search,'a+','contactHS_error_search');
+// writes logs into a file in upload directory
+function wm_write_log_file($entry, $mode = 'a', $file = 'mpt-orders') {
+    // Get WordPress uploads directory.
+    $upload_dir = wp_upload_dir();
+    $upload_dir = $upload_dir['basedir'];
+
+    // If the entry is array, json_encode.
+    $entry = json_encode( $entry ); 
+    if (!file_exists($upload_dir.'/wc-orders')) {
+        mkdir($upload_dir.'/wc-orders', 0777, true);
+    }
+    // Write the log file.
+    $file  = $upload_dir . '/wc-orders/' . $file . '.log';
+    $file  = fopen( $file, $mode );
+    $bytes = fwrite( $file, current_time( 'mysql' ) . "\n" ); 
+    $bytes = fwrite( $file, $entry . "\n\n" ); 
+    fclose( $file ); 
+
+    return $bytes;
 }
